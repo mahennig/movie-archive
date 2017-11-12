@@ -21,9 +21,4 @@ public class MoviearchiveApplication {
 		SpringApplication.run(MoviearchiveApplication.class, args);
 	}
 
-	@Bean
-	public Boolean loadData() {
-		logger.info("Initialize mock data ...");
-		return true;
-	}
 }
