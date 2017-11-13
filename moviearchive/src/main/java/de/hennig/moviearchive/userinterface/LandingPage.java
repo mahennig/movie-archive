@@ -1,51 +1,41 @@
 package de.hennig.moviearchive.userinterface;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Alignment;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
-
-import de.hennig.moviearchive.services.MovieService;
+import javax.servlet.annotation.WebServlet;
 
 @Theme("valo")
-@SpringUI
 @Title("Filmarchiv")
+@SuppressWarnings("serial")
 public class LandingPage extends UI {
 
-	private static final long serialVersionUID = 1L;
+    @WebServlet(value = "/home", asyncSupported = true)
+    public static class Servlet extends VaadinServlet {
+    }
 
-	@Autowired
-	MovieService movieService;
+    private static final long serialVersionUID = 1L;
 
-	private VerticalLayout layout;
+    private VerticalLayout layout;
 
-	@Override
-	protected void init(VaadinRequest request) {
-		setContent(new Button("Click me", e -> Notification.show("Hello Spring+Vaadin user!")));
-	    setupLayout();
-        addHeader();
-	}
+    @Override
+    protected void init(VaadinRequest request) {
+        final VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        setContent(layout);
 
-	private void setupLayout() {
-		layout = new VerticalLayout();
-		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		setContent(layout);
-	}
-
-	private void addHeader() {
-		Label header = new Label("TODO");
-		header.addStyleName(ValoTheme.LABEL_H1);
-		layout.addComponent(header);
-
-	}
+        Button button = new Button("Click Me");
+        button.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                layout.addComponent(new Label("Thank you for clicking"));
+            }
+        });
+        layout.addComponent(button);
+    }
 
 }
