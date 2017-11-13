@@ -1,4 +1,4 @@
-package de.hennig.moviearchive.ui;
+package de.hennig.moviearchive.userinterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +18,7 @@ import de.hennig.moviearchive.services.MovieService;
 
 @Theme("valo")
 @SpringUI
-@Title("Movie Archive")
+@Title("Filmarchiv")
 public class LandingPage extends UI {
 
 	private static final long serialVersionUID = 1L;

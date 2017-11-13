@@ -1,17 +1,15 @@
 
 package de.hennig.moviearchive.repositories;
 
-
-import org.springframework.data.neo4j.annotation.Depth;
-import org.springframework.data.neo4j.repository.GraphRepository;
-
 import de.hennig.moviearchive.domain.Movie;
+import org.springframework.data.repository.CrudRepository;
 
-public interface MovieRepository extends GraphRepository<Movie> {
+import java.util.List;
 
-	Movie findByMovieId(String movieId);
+public interface MovieRepository extends CrudRepository<Movie, Long> {
 
-	Movie findByMovieId(String movieId, @Depth int depth);
+    Movie findById(String movieId);
 
-    void deleteByMovieId(String movieId);
+    List<Movie> findByName(String name);
 }
+
