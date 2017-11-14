@@ -10,16 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "FOLDERS")
 public class Folder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="ID")
     private Long id;
 
-    @Column
+    @Column(unique=true)
     Integer folderNumber;
 
     public Long getId() {

@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 import static de.hennig.moviearchive.domain.Person.Type.ACTOR;
 
-//@Entity
+@Entity
 public class Actor extends Person {
 
     @Override

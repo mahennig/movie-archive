@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 import static de.hennig.moviearchive.domain.Person.Type.DIRECTOR;
 
-//@Entity
+@Entity
 public class Director extends Person {
 
     @Override

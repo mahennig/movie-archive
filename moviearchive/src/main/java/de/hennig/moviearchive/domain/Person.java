@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
-//@MappedSuperclass
+@MappedSuperclass
 public abstract class Person {
 
     @Id

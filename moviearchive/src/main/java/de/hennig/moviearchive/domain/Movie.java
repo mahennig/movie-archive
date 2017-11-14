@@ -2,44 +2,59 @@
 package de.hennig.moviearchive.domain;
 
 import de.hennig.moviearchive.domain.core.GenreCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.Year;
 import java.util.List;
 
-//@Entity
+@Entity
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "TITLE", nullable = false)
     private String title;
 
+    @OneToOne(optional = true, targetEntity = Director.class)
     private Director director;
 
-    @OneToMany(targetEntity = Person.class, mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Actor.class, mappedBy = "id")
+    @Fetch(FetchMode.SELECT)
     private List<Actor> cast;
 
+    @Column(name = "YEAR")
     private Year year;
 
+    @Column(name = "GENRES")
     private String genres;
 
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    private String runningTime;
+    @Column(name = "RUNNING_TIME")
+    private Long runningTime;
 
-    @OneToMany(targetEntity = Keyword.class, mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Keyword.class, mappedBy = "id")
+    @Fetch(FetchMode.SELECT)
     private List<Keyword> tags;
 
+    @OneToOne(optional = true, targetEntity = Folder.class)
     private Folder folder;
 
+    @Column(name = "PAGE")
     private Integer page;
 
     public Long getId() {
@@ -98,11 +113,11 @@ public class Movie {
         this.description = description;
     }
 
-    public String getRunningTime() {
+    public Long getRunningTime() {
         return runningTime;
     }
 
-    public void setRunningTime(String runningTime) {
+    public void setRunningTime(Long runningTime) {
         this.runningTime = runningTime;
     }
 
