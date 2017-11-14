@@ -1,15 +1,15 @@
 
 package de.hennig.moviearchive.repositories;
 
+import de.hennig.moviearchive.domain.Folder;
 import de.hennig.moviearchive.domain.Movie;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface MovieRepository extends CrudRepository<Movie, Long> {
+public interface FolderRepository extends CrudRepository<Folder, Long> {
 
-    Movie findById(String movieId);
+    Folder findByFolderNumber(Integer folderNumber);
 
-    List<Movie> findByName(String name);
 }
 
