@@ -13,7 +13,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("valo")
 @Title("Filmarchiv")
-@Push
 public class LandingPage extends UI {
 
     @Override
