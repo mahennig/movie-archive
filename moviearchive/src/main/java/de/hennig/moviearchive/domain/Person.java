@@ -16,10 +16,7 @@ public abstract class Person {
     private Long id;
 
     @Column
-    String firstName;
-
-    @Column
-    String lastName;
+    String name;
 
     @Column
     Type type;
@@ -32,20 +29,12 @@ public abstract class Person {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setType() {

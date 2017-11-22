@@ -57,8 +57,7 @@ public class TestDataBuilder {
 
     private Director createDirector() {
         Director director = new Director();
-        director.setFirstName("Markus");
-        director.setLastName("Regie");
+        director.setName("Markus");
         directorRepository.save(director);
         return director;
     }
