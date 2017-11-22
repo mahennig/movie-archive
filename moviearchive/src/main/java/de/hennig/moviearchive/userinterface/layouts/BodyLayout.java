@@ -8,6 +8,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.domain.Director;
 import de.hennig.moviearchive.domain.core.CountryCode;
+import de.hennig.moviearchive.util.CollectionUtil;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class BodyLayout extends VerticalLayout {
 
@@ -40,6 +44,7 @@ public class BodyLayout extends VerticalLayout {
         additionInfoContainer = new HorizontalLayout();
         countryComboBox = new ComboBox<>("Land");
         yearComboBox = new ComboBox<>("Erscheinungsjahr");
+        initYearComboBox();
         descriptionArea = new TextArea("Handlung");
         directorBox = new ComboBox<>("Regisseur");
     }
@@ -59,5 +64,13 @@ public class BodyLayout extends VerticalLayout {
         buttonContainer.addComponent(cancelButton);
         this.addComponent(buttonContainer);
         this.setResponsive(true);
+    }
+
+    private void initYearComboBox() {
+        yearComboBox.setItems(CollectionUtil.getYearCollection());
+    }
+
+    private void initCountryComboBox() {
+        //yearComboBox.setItemCaptionGenerator(CountryCode::getName);
     }
 }
