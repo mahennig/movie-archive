@@ -154,6 +154,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>clean</goal>
                             <goal>update-theme</goal>
                             <goal>update-widgetset</goal>
                             <goal>compile</goal>

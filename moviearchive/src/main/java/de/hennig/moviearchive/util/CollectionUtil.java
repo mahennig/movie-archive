@@ -21,4 +21,5 @@ public class CollectionUtil {
         Stream<Integer> intStream = IntStream.range(startYear, currentYear).boxed();
         return intStream.collect(Collectors.toList());
     }
+
 }

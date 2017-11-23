@@ -7,28 +7,33 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.domain.Director;
-import de.hennig.moviearchive.domain.core.CountryCode;
+import de.hennig.moviearchive.services.CountryService;
+import de.hennig.moviearchive.userinterface.components.CountryComboBox;
+import de.hennig.moviearchive.userinterface.components.GenreSelect;
 import de.hennig.moviearchive.util.CollectionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Calendar;
-import java.util.Date;
 
 public class BodyLayout extends VerticalLayout {
 
+    @Autowired
+    CountryService countryService;
+
     private TextField titleField;
-
-
-    ComboBox<CountryCode> countryComboBox;
-    ComboBox<Integer> yearComboBox;
-    private HorizontalLayout additionInfoContainer;
-
     ComboBox<Director> directorBox;
+    private HorizontalLayout titleDirectorContainer;
+
+    private TextArea descriptionArea;
+    private GenreSelect genreSelector;
+
+    ComboBox countryComboBox;
+    ComboBox<Integer> yearComboBox;
+    private HorizontalLayout yearCountryContainer;
+
 
     private Button saveButton;
     private Button cancelButton;
     private HorizontalLayout buttonContainer;
-
-    private TextArea descriptionArea;
 
 
     public BodyLayout() {
@@ -37,28 +42,35 @@ public class BodyLayout extends VerticalLayout {
     }
 
     private void initComponents() {
+        titleDirectorContainer = new HorizontalLayout();
         titleField = new TextField("Titel");
-        saveButton = new Button("Speichern");
-        cancelButton = new Button("Abbrechen");
-        buttonContainer = new HorizontalLayout();
-        additionInfoContainer = new HorizontalLayout();
-        countryComboBox = new ComboBox<>("Land");
+        directorBox = new ComboBox<>("Regisseur");
+
+        descriptionArea = new TextArea("Handlung");
+        descriptionArea.setSizeFull();
+        genreSelector = new GenreSelect("Genre");
+
+        yearCountryContainer = new HorizontalLayout();
+        countryComboBox = new CountryComboBox("Land");
         yearComboBox = new ComboBox<>("Erscheinungsjahr");
         initYearComboBox();
         descriptionArea = new TextArea("Handlung");
-        directorBox = new ComboBox<>("Regisseur");
+        saveButton = new Button("Speichern");
+        cancelButton = new Button("Abbrechen");
+        buttonContainer = new HorizontalLayout();
     }
 
     private void buildLayout() {
-        this.addComponent(titleField);
+        titleDirectorContainer.addComponent(titleField);
+        titleDirectorContainer.addComponent(directorBox);
+        this.addComponent(titleDirectorContainer);
 
         this.addComponent(descriptionArea);
+        this.addComponent(genreSelector);
 
-        this.addComponent(directorBox);
-
-        additionInfoContainer.addComponent(countryComboBox);
-        additionInfoContainer.addComponent(yearComboBox);
-        this.addComponent(additionInfoContainer);
+        yearCountryContainer.addComponent(countryComboBox);
+        yearCountryContainer.addComponent(yearComboBox);
+        this.addComponent(yearCountryContainer);
 
         buttonContainer.addComponent(saveButton);
         buttonContainer.addComponent(cancelButton);
@@ -70,7 +82,4 @@ public class BodyLayout extends VerticalLayout {
         yearComboBox.setItems(CollectionUtil.getYearCollection());
     }
 
-    private void initCountryComboBox() {
-        //yearComboBox.setItemCaptionGenerator(CountryCode::getName);
-    }
 }
