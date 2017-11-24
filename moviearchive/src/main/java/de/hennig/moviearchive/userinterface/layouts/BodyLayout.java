@@ -1,5 +1,6 @@
 package de.hennig.moviearchive.userinterface.layouts;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -44,7 +45,9 @@ public class BodyLayout extends VerticalLayout {
     private void initComponents() {
         titleDirectorContainer = new HorizontalLayout();
         titleField = new TextField("Titel");
+        titleField.setIcon(VaadinIcons.MOVIE);
         directorBox = new ComboBox<>("Regisseur");
+        directorBox.setIcon(VaadinIcons.USER);
 
         descriptionArea = new TextArea("Handlung");
         descriptionArea.setSizeFull();
@@ -55,8 +58,9 @@ public class BodyLayout extends VerticalLayout {
         yearComboBox = new ComboBox<>("Erscheinungsjahr");
         initYearComboBox();
         descriptionArea = new TextArea("Handlung");
-        saveButton = new Button("Speichern");
-        cancelButton = new Button("Abbrechen");
+
+        saveButton = new Button("Speichern", VaadinIcons.SAFE);
+        cancelButton = new Button("Abbrechen", VaadinIcons.CLOSE);
         buttonContainer = new HorizontalLayout();
     }
 
