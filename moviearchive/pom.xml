@@ -63,6 +63,17 @@
         <!-- Vaadin-->
         <dependency>
             <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring</artifactId>
+            <version>2.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin-server</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-server</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
@@ -74,11 +85,6 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
-            <version>${vaadin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-push</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
 
@@ -99,6 +105,13 @@
             <version>6.11</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -141,24 +154,17 @@
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.version}</version>
-
-                <configuration>
-                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-                    <webappDirectory>${basedir}/target/classes/VAADIN/widgetsets</webappDirectory>
-                    <draftCompile>false</draftCompile>
-                    <compileReport>false</compileReport>
-                    <style>OBF</style>
-                    <strict>true</strict>
-                </configuration>
-
                 <executions>
+
                     <execution>
+                        <configuration>
+
+                        </configuration>
                         <goals>
                             <goal>clean</goal>
                             <goal>update-theme</goal>
                             <goal>update-widgetset</goal>
                             <goal>compile</goal>
-                            <goal>compile-theme</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -17,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BodyLayout extends VerticalLayout {
 
-    @Autowired
-    CountryService countryService;
-
     private TextField titleField;
     ComboBox<Director> directorBox;
     private HorizontalLayout titleDirectorContainer;

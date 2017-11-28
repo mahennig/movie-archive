@@ -1,6 +1,5 @@
 package de.hennig.moviearchive.userinterface.components;
 
-import com.google.common.collect.Lists;
 import com.vaadin.ui.Grid;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
@@ -11,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieGrid extends Grid<Movie> {
-
-    @Autowired
-    MovieRepository movieRepository;
 
     public MovieGrid(String caption, MovieRepository movieRepository) {
 
