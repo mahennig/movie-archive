@@ -11,6 +11,8 @@ public class GenreSelect extends TwinColSelect<GenreData> {
     public GenreSelect(String caption) {
         this.setCaption(caption);
 
+        this.setHeight("60%");
+
         this.setItems(new GenreData("Drama"), new GenreData("Komödie"));
 
         this.addSelectionListener(event ->

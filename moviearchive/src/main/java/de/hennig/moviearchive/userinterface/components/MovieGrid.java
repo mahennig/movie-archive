@@ -2,8 +2,6 @@ package de.hennig.moviearchive.userinterface.components;
 
 import com.vaadin.ui.Grid;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.repositories.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import java.util.List;
 
 public class MovieGrid extends Grid<Movie> {
 
-    public MovieGrid(String caption, MovieRepository movieRepository) {
+    public MovieGrid(String caption) {
 
         this.setCaption(caption);
         loadMovies();

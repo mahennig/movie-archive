@@ -1,86 +1,37 @@
 package de.hennig.moviearchive.userinterface.layouts;
 
-import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import de.hennig.moviearchive.domain.Director;
-import de.hennig.moviearchive.services.CountryService;
-import de.hennig.moviearchive.userinterface.components.CountryComboBox;
-import de.hennig.moviearchive.userinterface.components.GenreSelect;
-import de.hennig.moviearchive.util.CollectionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.hennig.moviearchive.userinterface.components.MovieGrid;
 
+public class BodyLayout extends HorizontalLayout {
 
-public class BodyLayout extends VerticalLayout {
-
-    private TextField titleField;
-    ComboBox<Director> directorBox;
-    private HorizontalLayout titleDirectorContainer;
-
-    private TextArea descriptionArea;
-    private GenreSelect genreSelector;
-
-    ComboBox countryComboBox;
-    ComboBox<Integer> yearComboBox;
-    private HorizontalLayout yearCountryContainer;
-
-
-    private Button saveButton;
-    private Button cancelButton;
-    private HorizontalLayout buttonContainer;
-
+    MovieGrid movieGrid;
+    AddMovieLayout addMovieLayout;
 
     public BodyLayout() {
-        initComponents();
-        buildLayout();
+        prepareMovieGrid();
+        prepareAddMovieLayout();
+        prepareLayout();
     }
 
-    private void initComponents() {
-        titleDirectorContainer = new HorizontalLayout();
-        titleField = new TextField("Titel");
-        titleField.setIcon(VaadinIcons.MOVIE);
-        directorBox = new ComboBox<>("Regisseur");
-        directorBox.setIcon(VaadinIcons.USER);
-
-        descriptionArea = new TextArea("Handlung");
-        descriptionArea.setSizeFull();
-        genreSelector = new GenreSelect("Genre");
-
-        yearCountryContainer = new HorizontalLayout();
-        countryComboBox = new CountryComboBox("Land");
-        yearComboBox = new ComboBox<>("Erscheinungsjahr");
-        initYearComboBox();
-        descriptionArea = new TextArea("Handlung");
-
-        saveButton = new Button("Speichern", VaadinIcons.SAFE);
-        cancelButton = new Button("Abbrechen", VaadinIcons.CLOSE);
-        buttonContainer = new HorizontalLayout();
+    private void prepareMovieGrid() {
+        movieGrid = new MovieGrid("Meine Filme");
+        movieGrid.setSizeFull();
     }
 
-    private void buildLayout() {
-        titleDirectorContainer.addComponent(titleField);
-        titleDirectorContainer.addComponent(directorBox);
-        this.addComponent(titleDirectorContainer);
-
-        this.addComponent(descriptionArea);
-        this.addComponent(genreSelector);
-
-        yearCountryContainer.addComponent(countryComboBox);
-        yearCountryContainer.addComponent(yearComboBox);
-        this.addComponent(yearCountryContainer);
-
-        buttonContainer.addComponent(saveButton);
-        buttonContainer.addComponent(cancelButton);
-        this.addComponent(buttonContainer);
-        this.setResponsive(true);
+    private void prepareAddMovieLayout() {
+        addMovieLayout = new AddMovieLayout();
     }
 
-    private void initYearComboBox() {
-        yearComboBox.setItems(CollectionUtil.getYearCollection());
+    private void prepareLayout() {
+        this.setMargin(new MarginInfo(true, true, false, true));
+        this.addComponent(movieGrid);
+        this.setComponentAlignment(movieGrid, Alignment.TOP_LEFT);
+        this.addComponent(addMovieLayout);
+        this.setComponentAlignment(addMovieLayout, Alignment.TOP_RIGHT);
     }
-
 }
