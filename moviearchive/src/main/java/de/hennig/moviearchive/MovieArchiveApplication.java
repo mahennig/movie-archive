@@ -2,6 +2,7 @@ package de.hennig.moviearchive;
 
 import com.google.common.collect.Lists;
 import com.vaadin.spring.annotation.EnableVaadin;
+import com.vaadin.spring.annotation.VaadinSessionScope;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
 import de.hennig.moviearchive.services.Loader.CountryLoader;
