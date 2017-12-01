@@ -15,6 +15,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringComponent
 @UIScope
@@ -23,7 +24,9 @@ public class MovieTable extends Grid<Movie> {
 
 	@Autowired
 	MovieRepository movieRepository;
-	
+
+	Optional<Movie> selectedMovie;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public MovieTable() {
@@ -37,6 +40,14 @@ public class MovieTable extends Grid<Movie> {
 		movies = Lists.newArrayList(movieRepository.findAll());
 		movies.forEach(e -> logger.info(e.getTitle()));
 		this.setItems(movies);
+
+		addSelectionListener(event -> {
+			selectedMovie = event.getFirstSelectedItem();
+		});
+	}
+
+	public Optional<Movie> getSelectedMovie() {
+		return selectedMovie;
 	}
 
 	private void loadApplicationContext() {
