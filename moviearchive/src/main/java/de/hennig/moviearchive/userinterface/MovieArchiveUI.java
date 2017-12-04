@@ -29,37 +29,35 @@ import javax.servlet.annotation.WebServlet;
 @SpringUI
 public class MovieArchiveUI extends UI {
 
-    @Autowired
-    MovieRepository movieRepository;
+	@Autowired
+	MovieRepository movieRepository;
 
-    VerticalLayout main = new VerticalLayout();
-    HeaderLayout header = new HeaderLayout();
-    BodyLayout body = new BodyLayout();
-    HorizontalLine seperator = new HorizontalLine(1000);
+	VerticalLayout main = new VerticalLayout();
+	HeaderLayout header = new HeaderLayout();
+	BodyLayout body = new BodyLayout();
+	HorizontalLine seperator = new HorizontalLine(1000);
 
+	@Override
+	public void init(VaadinRequest request) {
+		main.addComponent(header);
+		main.addComponent(seperator);
+		main.setComponentAlignment(seperator, Alignment.MIDDLE_CENTER);
+		main.addComponent(body);
+		setContent(main);
+	}
 
-    @Override
-    public void init(VaadinRequest request) {
+	public static MovieArchiveUI get() {
+		return (MovieArchiveUI) UI.getCurrent();
+	}
 
-        main.addComponent(header);
-        main.addComponent(seperator);
-        main.setComponentAlignment(seperator, Alignment.MIDDLE_CENTER);
-        main.addComponent(body);
-        setContent(main);
-    }
+	@WebServlet(value = "/*", name = "MovieArchiveServlet", asyncSupported = true, initParams = {
+			@WebInitParam(name = "heartbeatInterval", value = "30") })
+	@VaadinServletConfiguration(ui = MovieArchiveUI.class, productionMode = false)
+	public static class Servlet extends SpringVaadinServlet {
+	}
 
-    public static MovieArchiveUI get() {
-        return (MovieArchiveUI) UI.getCurrent();
-    }
-
-    @WebServlet(value = "/*", name = "MovieArchiveServlet", asyncSupported = true, initParams = {
-            @WebInitParam(name = "heartbeatInterval", value = "30")})
-    @VaadinServletConfiguration(ui = MovieArchiveUI.class, productionMode = false)
-    public static class Servlet extends SpringVaadinServlet {
-    }
-
-    @Configuration
-    @EnableVaadin
-    public static class MyConfiguration {
-    }
+	@Configuration
+	@EnableVaadin
+	public static class MyConfiguration {
+	}
 }

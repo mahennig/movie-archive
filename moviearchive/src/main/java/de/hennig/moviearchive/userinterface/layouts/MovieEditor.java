@@ -73,16 +73,24 @@ public class MovieEditor extends VerticalLayout {
 				movieRepository.save(selectedMovie);
 				logger.info("Stored new Movie: " + selectedMovie);
 				logger.info(movieRepository.count() + " movies in database.");
+				unbindForm();
 			} else {
 				new Notification("Bitte füllen Sie zunächst die Felder aus.");
 				logger.info("Movie is null");
 			}
 		}
 	}
+	
+	private void unbindForm() {
+		movieBinder = new Binder();
+		logger.debug("Unbind all forms.");
+	}
 
 	private void initBinder() {
 		movieBinder.setBean(selectedMovie);
-		movieBinder.forField(titleField).bind(Movie::getTitle, Movie::setTitle);
+		movieBinder.forField(titleField)
+		.asRequired("Movie needs a title.")
+		.bind(Movie::getTitle, Movie::setTitle);
 	}
 
 	private void configComponents() {
