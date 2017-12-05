@@ -1,31 +1,32 @@
 package de.hennig.moviearchive.userinterface.layouts;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class HeaderLayout extends HorizontalLayout {
 
-    HorizontalLayout titleBar;
+    Label title = new Label("Film Datenbank");
+    Button createMovie = new Button("Neuen Film hinzufügen");
 
-    Label title;
 
-    public HeaderLayout(){
-        initComponents();
-        buildLayout();
+    public HeaderLayout() {
+        prepareLayout();
     }
 
-    private void initComponents() {
-        titleBar = new HorizontalLayout();
-        titleBar.setSizeFull();
-        title = new Label("Film Datenbank");
-    }
+    private void prepareLayout() {
+        this.setMargin(new MarginInfo(false, true, false, true));
 
-    private void buildLayout(){
-        titleBar.addComponent(title);
-        titleBar.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-        this.addComponent(titleBar);
+        this.addComponent(title);
+        this.setComponentAlignment(title, Alignment.TOP_LEFT);
+
+        this.addComponent(createMovie);
+        this.setComponentAlignment(createMovie, Alignment.TOP_RIGHT);
+
+
     }
 
 

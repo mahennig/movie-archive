@@ -20,7 +20,7 @@ import java.util.Optional;
 @SpringComponent
 @UIScope
 @SuppressWarnings("serial")
-public class MovieTable extends Grid<Movie> {
+public class MovieGrid extends Grid<Movie> {
 
 	@Autowired
 	MovieRepository movieRepository;
@@ -29,17 +29,19 @@ public class MovieTable extends Grid<Movie> {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public MovieTable() {
+	public MovieGrid() {
 		loadApplicationContext();
-		this.addColumn(Movie::getTitle).setCaption("Titel");
-		this.addColumn(Movie::getYear).setCaption("Jahr");
-		this.addColumn(Movie::getRunningTime).setCaption("Laufzeit");
-		this.addColumn(Movie::getDescription).setCaption("Handlung");
+		addColumn(Movie::getTitle).setCaption("Titel");
+		addColumn(Movie::getDirector).setCaption("Regisseur");
+		addColumn(Movie::getYear).setCaption("Jahr");
+		addColumn(Movie::getFolder).setCaption("Ordner");
+		addColumn(Movie::getPage).setCaption("Seite");
+		addColumn(Movie::getRunningTime).setCaption("Laufzeit");
+		addColumn(Movie::getDescription).setCaption("Handlung");
 
 		List<Movie> movies = new ArrayList();
 		movies = Lists.newArrayList(movieRepository.findAll());
-		movies.forEach(e -> logger.info(e.getTitle()));
-		this.setItems(movies);
+		setItems(movies);
 
 		addSelectionListener(event -> {
 			selectedMovie = event.getFirstSelectedItem();

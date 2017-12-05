@@ -1,10 +1,7 @@
 package de.hennig.moviearchive.domain.builder;
 
-import de.hennig.moviearchive.domain.Actor;
-import de.hennig.moviearchive.domain.Director;
-import de.hennig.moviearchive.domain.Folder;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.domain.core.GenreCode;
+import de.hennig.moviearchive.domain.Person;
 
 import java.util.List;
 
@@ -23,22 +20,22 @@ public class MovieBuilder extends AbstractBuilder<Movie> {
         }
     }
 
-    public MovieBuilder withFolder(Folder folder) {
+    public MovieBuilder withFolder(Integer folder) {
         entity.setFolder(folder);
         return this;
     }
 
-    public MovieBuilder withActors(List<Actor> cast) {
+    public MovieBuilder withActors(List<Person> cast) {
         entity.setCast(cast);
         return this;
     }
 
-    public MovieBuilder addActor(Actor actor) {
+    public MovieBuilder addActor(Person actor) {
         entity.getCast().add(actor);
         return this;
     }
 
-    public MovieBuilder withDirector(Director director) {
+    public MovieBuilder withDirector(Person director) {
         entity.setDirector(director);
         return this;
     }

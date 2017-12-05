@@ -1,25 +1,30 @@
 package de.hennig.moviearchive.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.List;
 
-@MappedSuperclass
-public abstract class Person {
+@Entity
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "PERSON_ID")
     private Long id;
 
-    @Column
-    String name;
+    @Column(name = "NAME", unique = true, nullable = false)
+    private String name;
 
-    @Column
-    Type type;
+    @ManyToOne(targetEntity = Movie.class)
+    @JoinColumn(name = "movieId")
+    private List<Movie> movies;
 
     public Long getId() {
         return id;
@@ -37,17 +42,16 @@ public abstract class Person {
         this.name = name;
     }
 
-    public void setType() {
-        this.type = getChildType();
+    public List<Movie> getMovies() {
+        return movies;
     }
 
-    public Type getType() {
-        return type;
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 
-    protected abstract Type getChildType();
-
-    protected enum Type {
-        ACTOR, DIRECTOR
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -14,7 +14,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import de.hennig.moviearchive.domain.Director;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
 import de.hennig.moviearchive.userinterface.components.CountryComboBox;
@@ -33,7 +32,7 @@ public class MovieEditor extends VerticalLayout {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private TextField titleField = new TextField("Titel");
-	ComboBox<Director> directorBox = new ComboBox<>("Regisseur");
+	ComboBox<String> directorBox = new ComboBox<>("Regisseur");
 	private HorizontalLayout upperItemContainer = new HorizontalLayout();
 
 	private TextArea descriptionArea = new TextArea("Handlung");

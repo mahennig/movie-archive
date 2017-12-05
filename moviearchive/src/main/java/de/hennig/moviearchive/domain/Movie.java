@@ -1,10 +1,10 @@
 
 package de.hennig.moviearchive.domain;
 
-import de.hennig.moviearchive.domain.core.GenreCode;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,32 +13,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
 
-import java.time.Year;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Movie {
+public class Movie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "MOVIE_ID")
     private Long id;
 
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-    @OneToOne(optional = true, targetEntity = Director.class)
-    private Director director;
+    @OneToOne(targetEntity = Person.class)
+    private Person director;
 
-    @OneToMany(targetEntity = Actor.class, mappedBy = "id")
-    @Fetch(FetchMode.SELECT)
-    private List<Actor> cast;
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Person.class,
+            fetch = FetchType.EAGER, mappedBy = "movies")
+    private List<Person> cast;
 
     @Column(name = "YEAR")
-    private Year year;
+    private Integer year;
 
     @Column(name = "GENRES")
     private String genres;
@@ -53,8 +51,8 @@ public class Movie {
     @Fetch(FetchMode.SELECT)
     private List<Keyword> tags;
 
-    @OneToOne(optional = true, targetEntity = Folder.class)
-    private Folder folder;
+    @Column(name = "FOLDER")
+    private Integer folder;
 
     @Column(name = "PAGE")
     private Integer page;
@@ -75,27 +73,27 @@ public class Movie {
         this.title = title;
     }
 
-    public Director getDirector() {
+    public Person getDirector() {
         return director;
     }
 
-    public void setDirector(Director director) {
+    public void setDirector(Person director) {
         this.director = director;
     }
 
-    public List<Actor> getCast() {
+    public List<Person> getCast() {
         return cast;
     }
 
-    public void setCast(List<Actor> cast) {
+    public void setCast(List<Person> cast) {
         this.cast = cast;
     }
 
-    public Year getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Year year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -131,11 +129,11 @@ public class Movie {
         this.tags = tags;
     }
 
-    public Folder getFolder() {
+    public Integer getFolder() {
         return folder;
     }
 
-    public void setFolder(Folder folder) {
+    public void setFolder(Integer folder) {
         this.folder = folder;
     }
 

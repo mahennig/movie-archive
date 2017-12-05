@@ -11,10 +11,12 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
 import de.hennig.moviearchive.userinterface.components.HorizontalLine;
 import de.hennig.moviearchive.userinterface.layouts.BodyLayout;
 import de.hennig.moviearchive.userinterface.layouts.HeaderLayout;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -23,14 +25,13 @@ import org.springframework.web.context.ContextLoaderListener;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Title("Film Datenbank")
 @SpringUI
 public class MovieArchiveUI extends UI {
-
-	@Autowired
-	MovieRepository movieRepository;
 
 	VerticalLayout main = new VerticalLayout();
 	HeaderLayout header = new HeaderLayout();
@@ -60,4 +61,6 @@ public class MovieArchiveUI extends UI {
 	@EnableVaadin
 	public static class MyConfiguration {
 	}
+
+
 }
