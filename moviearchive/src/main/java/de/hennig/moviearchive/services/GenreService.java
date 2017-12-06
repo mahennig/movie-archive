@@ -1,6 +1,7 @@
 package de.hennig.moviearchive.services;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.vaadin.data.provider.QuerySortOrder;
 import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.domain.Movie;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GenreService {
@@ -26,5 +28,9 @@ public class GenreService {
 
     public int countGenres(String filter) {
         return Lists.newArrayList(genreRepository.findAll()).size();
+    }
+
+    public Set<Genre> findAll() {
+        return Sets.newHashSet(genreRepository.findAll());
     }
 }

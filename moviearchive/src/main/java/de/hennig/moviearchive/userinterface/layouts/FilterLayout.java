@@ -9,12 +9,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.services.dataprovider.GenreDataProvider;
 import de.hennig.moviearchive.services.GenreService;
 import de.hennig.moviearchive.userinterface.components.MovieGrid;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import java.util.List;
 import java.util.Set;
 
 public class FilterLayout extends HorizontalLayout {
@@ -25,15 +23,17 @@ public class FilterLayout extends HorizontalLayout {
     private final TextField directorFilter = new TextField();
     private final ListSelect<Genre> genreFilter = new ListSelect();
 
+    MovieGrid movieGrid = new MovieGrid();
+
     private final VerticalLayout filterContainer = new VerticalLayout();
 
-    private final MovieGrid movieGrid = new MovieGrid();
+    //private final MovieGrid movieGrid = new MovieGrid();
 
     public FilterLayout() {
         loadApplicationContext();
         prepareFilterFields();
         addComponent(filterContainer);
-        addComponent(movieGrid);
+        //addComponent(movieGrid);
 
     }
 
@@ -44,8 +44,7 @@ public class FilterLayout extends HorizontalLayout {
         titleFilter.setPlaceholder("Titel ...");
         directorFilter.setPlaceholder("Regisseur ...");
         titleFilter.addValueChangeListener(this::onTitleFilterTextChange);
-        genreFilter.setDataProvider(new GenreDataProvider(genreService));
-        //genreFilter.addValueChangeListener(this::onGenreFilterTextChange);
+        genreFilter.setData(genreService.findAll());
     }
 
 

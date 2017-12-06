@@ -1,28 +1,24 @@
 package de.hennig.moviearchive.services.dataprovider;
 
-import com.vaadin.data.provider.AbstractBackEndDataProvider;
-import com.vaadin.data.provider.Query;
+import com.vaadin.data.provider.DataProvider;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.services.MovieService;
 
 import java.util.stream.Stream;
 
-public class MovieDataProvider extends AbstractBackEndDataProvider<Movie, String> {
+public interface MovieDataProvider extends DataProvider<Movie, String> {
 
-    private final MovieService movieService;
+    /**
+     * Store given movie to the repository.
+     *
+     * @param movie the updated or new movie
+     */
+    public void save(Movie movie);
 
-    public MovieDataProvider(MovieService movieService) {
-        this.movieService = movieService;
-    }
+    /**
+     * Delete given movie from the repository.
+     *
+     * @param movie the movie to be deleted
+     */
+    public void delete(Movie movie);
 
-    @Override
-    public  Stream<Movie> fetchFromBackEnd(Query<Movie, String> query) {
-        return movieService.fetchMovies(query.getFilter().orElse(null), query.getLimit(), query.getOffset(),
-                query.getSortOrders()).stream();
-    }
-
-    @Override
-    public int sizeInBackEnd(Query<Movie, String> query) {
-        return movieService.countMovies(query.getFilter().orElse(null));
-    }
 }
