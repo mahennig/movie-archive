@@ -1,9 +1,11 @@
 package de.hennig.moviearchive.domain.builder;
 
+import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 
 import java.util.List;
+import java.util.Set;
 
 public class MovieBuilder extends AbstractBuilder<Movie> {
 
@@ -25,7 +27,7 @@ public class MovieBuilder extends AbstractBuilder<Movie> {
         return this;
     }
 
-    public MovieBuilder withActors(List<Person> cast) {
+    public MovieBuilder withActors(Set<Person> cast) {
         entity.setCast(cast);
         return this;
     }
@@ -45,8 +47,8 @@ public class MovieBuilder extends AbstractBuilder<Movie> {
         return this;
     }
 
-    public MovieBuilder withGenres(List<String> genres) {
-        entity.setGenres(genres.toString());
+    public MovieBuilder withGenres(Set<Genre> genres) {
+        entity.setGenres(genres);
         return this;
     }
 

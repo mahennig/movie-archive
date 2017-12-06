@@ -8,15 +8,18 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class Person implements Serializable {
+public class Genre implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PERSON_ID")
+    @Column(name = "GENRE_ID")
     private Long id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
+
+    @Column(name = "ACTIVE", nullable = false)
+    private Boolean activeFlag;
 
     public Long getId() {
         return id;
@@ -34,8 +37,17 @@ public class Person implements Serializable {
         this.name = name;
     }
 
+    public Boolean getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
     @Override
     public String toString() {
         return name;
     }
+
 }

@@ -1,55 +1,59 @@
 
 package de.hennig.moviearchive.domain;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Movie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     @Column(name = "MOVIE_ID")
-    private Long id;
+    private Long id = -1L;
 
-    @Column(name = "TITLE", nullable = false)
+    @NotNull
+    @Column(name = "TITLE", unique = true)
     private String title;
 
     @OneToOne(targetEntity = Person.class)
     private Person director;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Person.class,
-            fetch = FetchType.EAGER, mappedBy = "movies")
-    private List<Person> cast;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "MOVIE_AND_ACTOR", joinColumns = {
+            @JoinColumn(name = "MOVIE_ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "PERSON_ID")})
+    private Set<Person> cast = new HashSet<>();
 
     @Column(name = "YEAR")
     private Integer year;
 
-    @Column(name = "GENRES")
-    private String genres;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "MOVIE_AND_GENRE", joinColumns = {
+            @JoinColumn(name = "MOVIE_ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "GENRE_ID")})
+    private Set<Genre> genres = new HashSet<>();
 
     @Column(name = "DESCRIPTION")
     private String description;
 
     @Column(name = "RUNNING_TIME")
     private Long runningTime;
-
-    @OneToMany(targetEntity = Keyword.class, mappedBy = "id")
-    @Fetch(FetchMode.SELECT)
-    private List<Keyword> tags;
 
     @Column(name = "FOLDER")
     private Integer folder;
@@ -81,11 +85,11 @@ public class Movie implements Serializable {
         this.director = director;
     }
 
-    public List<Person> getCast() {
+    public Set<Person> getCast() {
         return cast;
     }
 
-    public void setCast(List<Person> cast) {
+    public void setCast(Set<Person> cast) {
         this.cast = cast;
     }
 
@@ -97,11 +101,11 @@ public class Movie implements Serializable {
         this.year = year;
     }
 
-    public String getGenres() {
+    public Set<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(String genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 
@@ -119,14 +123,6 @@ public class Movie implements Serializable {
 
     public void setRunningTime(Long runningTime) {
         this.runningTime = runningTime;
-    }
-
-    public List<Keyword> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Keyword> tags) {
-        this.tags = tags;
     }
 
     public Integer getFolder() {
@@ -155,7 +151,6 @@ public class Movie implements Serializable {
                 ", genres=" + genres +
                 ", description='" + description + '\'' +
                 ", runningTime='" + runningTime + '\'' +
-                ", tags=" + tags +
                 ", folder=" + folder +
                 ", page=" + page +
                 '}';

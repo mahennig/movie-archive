@@ -9,26 +9,40 @@ import org.springframework.stereotype.Service;
 
 import de.hennig.moviearchive.domain.Movie;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class MovieService {
 
     @Autowired
-    MovieRepository movieRepo;
+    MovieRepository movieRepository;
 
     public List<Movie> findAll() {
-        return Lists.newArrayList(movieRepo.findAll());
+        return Lists.newArrayList(movieRepository.findAll());
     }
 
-    ArrayList<Movie> fetchEmployees(String filter, int limit, int offset, List<QuerySortOrder> sortOrders) {
+    public ArrayList<Movie> fetchMovies(String filter, int limit, int offset, List<QuerySortOrder> sortOrders) {
         ArrayList<Movie> movies = new ArrayList<>();
-        movies = Lists.newArrayList(movieRepo.findAll());
+        movies = Lists.newArrayList(movieRepository.findAll());
         return movies;
     }
 
     public int countMovies(String filter) {
-        return Lists.newArrayList(movieRepo.findAll()).size();
+        return Lists.newArrayList(movieRepository.findAll()).size();
+    }
+
+    public Movie updateMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    public void deleteMovie(Movie movie) {
+        movieRepository.delete(movie);
+    }
+
+    public Movie getProduct(long movieId) {
+        return movieRepository.findOne(movieId);
     }
 }

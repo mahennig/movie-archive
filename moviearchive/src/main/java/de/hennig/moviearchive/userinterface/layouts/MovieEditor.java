@@ -16,6 +16,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
+import de.hennig.moviearchive.userinterface.MovieArchiveUI;
 import de.hennig.moviearchive.userinterface.components.CountryComboBox;
 import de.hennig.moviearchive.userinterface.components.GenreSelect;
 import de.hennig.moviearchive.userinterface.components.YearComboBox;
@@ -79,7 +80,7 @@ public class MovieEditor extends VerticalLayout {
 			}
 		}
 	}
-	
+
 	private void unbindForm() {
 		movieBinder = new Binder();
 		logger.debug("Unbind all forms.");

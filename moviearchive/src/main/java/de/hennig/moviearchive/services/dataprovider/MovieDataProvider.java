@@ -1,8 +1,9 @@
-package de.hennig.moviearchive.services;
+package de.hennig.moviearchive.services.dataprovider;
 
 import com.vaadin.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.data.provider.Query;
 import de.hennig.moviearchive.domain.Movie;
+import de.hennig.moviearchive.services.MovieService;
 
 import java.util.stream.Stream;
 
@@ -15,13 +16,13 @@ public class MovieDataProvider extends AbstractBackEndDataProvider<Movie, String
     }
 
     @Override
-    protected Stream<Movie> fetchFromBackEnd(Query<Movie, String> query) {
-        return movieService.fetchEmployees(query.getFilter().orElse(null), query.getLimit(), query.getOffset(),
+    public  Stream<Movie> fetchFromBackEnd(Query<Movie, String> query) {
+        return movieService.fetchMovies(query.getFilter().orElse(null), query.getLimit(), query.getOffset(),
                 query.getSortOrders()).stream();
     }
 
     @Override
-    protected int sizeInBackEnd(Query<Movie, String> query) {
+    public int sizeInBackEnd(Query<Movie, String> query) {
         return movieService.countMovies(query.getFilter().orElse(null));
     }
 }
