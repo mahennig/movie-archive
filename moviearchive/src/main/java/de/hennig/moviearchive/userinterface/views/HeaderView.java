@@ -1,5 +1,6 @@
 package de.hennig.moviearchive.userinterface.views;
 
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
@@ -18,10 +19,8 @@ public class HeaderView extends VerticalLayout implements View {
     HorizontalLayout headerContent = new HorizontalLayout();
     HorizontalLayout menuBar = new HorizontalLayout();
 
-
     public HeaderView() {
         buildLayout();
-        setSizeFull();
         setMargin(false);
         addComponent(headerContent);
         setComponentAlignment(headerContent, Alignment.TOP_CENTER);
@@ -31,7 +30,11 @@ public class HeaderView extends VerticalLayout implements View {
         headerContent.addComponent(title);
         headerContent.addComponentsAndExpand(menuBar);
         menuBar.addComponent(createMovie);
+        createMovie.addClickListener(e -> onCreateMovieClick());
         headerContent.setComponentAlignment(title, Alignment.TOP_LEFT);
         menuBar.setComponentAlignment(createMovie, Alignment.TOP_RIGHT);
+    }
+
+    private void onCreateMovieClick() {
     }
 }

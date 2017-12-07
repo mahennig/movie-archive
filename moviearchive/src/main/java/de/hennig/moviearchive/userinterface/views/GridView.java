@@ -39,26 +39,27 @@ public class GridView extends VerticalLayout implements View {
     public GridView() {
         loadApplicationContext();
         buildLayout();
-        addComponent(gridContainer);
-        setComponentAlignment(gridContainer, Alignment.TOP_CENTER);
+        addComponentsAndExpand(gridContainer);
+        setComponentAlignment(gridContainer, Alignment.MIDDLE_CENTER);
+        setMargin(new MarginInfo(true, false, true, false));
         setSizeFull();
-        setMargin(false);
     }
 
     private void buildLayout() {
         gridContainer.addComponent(filterBar);
         initFilterBar();
         gridContainer.addComponentsAndExpand(movieGrid);
+        movieGrid.setSizeFull();
     }
 
     private void initFilterBar() {
-        filterBar.setWidth("30%");
+        filterBar.setWidth(250, Unit.PIXELS);
         filterBar.addComponent(titleFilter);
         filterBar.addComponent(directorFilter);
         filterBar.addComponent(genreFilter);
-        genreFilter.setData(genreService.findAll());
-        titleFilter.setPlaceholder("Titel ...");
-        directorFilter.setPlaceholder("Regisseur ...");
+        genreFilter.setItems(genreService.findAll());
+        titleFilter.setPlaceholder("Titel");
+        directorFilter.setPlaceholder("Regisseur");
     }
 
     private void loadApplicationContext() {

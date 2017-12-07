@@ -2,15 +2,19 @@ package de.hennig.moviearchive.userinterface;
 
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import de.hennig.moviearchive.userinterface.views.ErrorView;
 import de.hennig.moviearchive.userinterface.views.GridView;
 import de.hennig.moviearchive.userinterface.views.HeaderView;
 import de.hennig.moviearchive.userinterface.views.AboutView;
@@ -29,19 +33,38 @@ public class MovieArchiveUI extends UI {
     private SpringViewProvider viewProvider;
 
     VerticalLayout layout = new VerticalLayout();
-    HeaderView headerView = new HeaderView();
-    GridView gridView = new GridView();
+    HeaderView headerView;
+
     AboutView aboutView = new AboutView();
+    VerticalLayout viewContainer = new VerticalLayout();
 
     @Override
     public void init(VaadinRequest request) {
         setContent(layout);
         Responsive.makeResponsive(this);
-        layout.addComponent(headerView);
-        layout.addComponent(gridView);
+
+        buildMainView();
+
         layout.addComponent(aboutView);
+        layout.setComponentAlignment(aboutView, Alignment.BOTTOM_CENTER);
         layout.setSizeFull();
         layout.setSpacing(false);
+    }
+
+    private void buildMainView() {
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
+        navigator.setErrorView(ErrorView.class);
+
+        headerView = new HeaderView();
+        layout.addComponentAsFirst(headerView);
+        layout.setComponentAlignment(headerView, Alignment.TOP_CENTER);
+
+        layout.addComponentsAndExpand(viewContainer);
+        viewContainer.setMargin(new MarginInfo(false, false,false,false));
+        layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
+        navigator.navigateTo(GridView.VIEW_NAME);
+
     }
 
     public static MovieArchiveUI get() {

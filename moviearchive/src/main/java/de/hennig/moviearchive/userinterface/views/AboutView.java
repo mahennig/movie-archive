@@ -28,10 +28,9 @@ public class AboutView extends VerticalLayout implements View {
                         + " Filmdatenbank " + VaadinIcons.COPYRIGHT + " Markus Hennig "
                         , ContentMode.HTML));
 
-        setSizeFull();
         setMargin(false);
         addComponent(aboutContent);
-        setComponentAlignment(aboutContent, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(aboutContent, Alignment.BOTTOM_CENTER);
     }
 
     @Override

@@ -19,32 +19,23 @@ import java.util.Optional;
 @UIScope
 public class MovieGrid extends Grid<Movie> {
 
-	@Autowired
-	MovieService movieService;
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	Optional<Movie> selectedMovie;
+    public MovieGrid() {
+        addColumn(Movie::getTitle).setCaption("Titel");
+        addColumn(Movie::getDirector).setCaption("Regisseur");
+        addColumn(Movie::getYear).setCaption("Jahr");
+        addColumn(Movie::getFolder).setCaption("Ordner");
+        addColumn(Movie::getPage).setCaption("Seite");
+        addColumn(Movie::getRunningTime).setCaption("Laufzeit");
+        addColumn(Movie::getDescription).setCaption("Handlung");
+    }
 
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+    public void refresh(Movie movie) {
+        getDataCommunicator().refresh(movie);
+    }
 
-	public MovieGrid() {
-		loadApplicationContext();
-		addColumn(Movie::getTitle).setCaption("Titel");
-		addColumn(Movie::getDirector).setCaption("Regisseur");
-		addColumn(Movie::getYear).setCaption("Jahr");
-		addColumn(Movie::getFolder).setCaption("Ordner");
-		addColumn(Movie::getPage).setCaption("Seite");
-		addColumn(Movie::getRunningTime).setCaption("Laufzeit");
-		addColumn(Movie::getDescription).setCaption("Handlung");
-		//this.setDataProvider(new MovieDataProvider(movieService));
-	}
-
-	public Optional<Movie> getSelectedMovie() {
-		return selectedMovie;
-	}
-
-	private void loadApplicationContext() {
-		this.movieService = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
-				.getBean(MovieService.class);
-	}
+    public Movie getSelectedRow() {
+        return asSingleSelect().getValue();
+    }
 }
