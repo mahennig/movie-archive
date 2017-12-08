@@ -5,6 +5,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomLayout;
@@ -29,9 +30,9 @@ public class AboutView extends VerticalLayout implements View {
                         , ContentMode.HTML));
 
         setSizeFull();
-        setMargin(false);
+        setMargin(new MarginInfo(false, false, false, false));
         addComponent(aboutContent);
-        setComponentAlignment(aboutContent, Alignment.MIDDLE_CENTER);
+        setComponentAlignment(aboutContent, Alignment.BOTTOM_CENTER);
     }
 
     @Override

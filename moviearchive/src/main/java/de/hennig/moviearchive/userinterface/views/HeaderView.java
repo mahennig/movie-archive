@@ -1,6 +1,8 @@
 package de.hennig.moviearchive.userinterface.views;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -18,19 +20,19 @@ public class HeaderView extends VerticalLayout implements View {
     HorizontalLayout headerContent = new HorizontalLayout();
     HorizontalLayout menuBar = new HorizontalLayout();
 
-
     public HeaderView() {
         buildLayout();
-        setSizeFull();
-        setMargin(false);
+        setMargin(new MarginInfo(false, false, false, false));
         addComponent(headerContent);
         setComponentAlignment(headerContent, Alignment.TOP_CENTER);
     }
 
     private void buildLayout() {
         headerContent.addComponent(title);
+        title.addStyleName( "h1" );
         headerContent.addComponentsAndExpand(menuBar);
         menuBar.addComponent(createMovie);
+        createMovie.setIcon(VaadinIcons.MOVIE);
         headerContent.setComponentAlignment(title, Alignment.TOP_LEFT);
         menuBar.setComponentAlignment(createMovie, Alignment.TOP_RIGHT);
     }

@@ -1,5 +1,6 @@
 package de.hennig.moviearchive.userinterface.views;
 
+import com.beust.jcommander.internal.Sets;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
@@ -16,6 +17,10 @@ import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.services.GenreService;
 import de.hennig.moviearchive.userinterface.components.HorizontalLine;
 import de.hennig.moviearchive.userinterface.components.MovieGrid;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -42,7 +47,7 @@ public class GridView extends VerticalLayout implements View {
         addComponent(gridContainer);
         setComponentAlignment(gridContainer, Alignment.TOP_CENTER);
         setSizeFull();
-        setMargin(false);
+        setMargin(new MarginInfo(false, false, false, false));
     }
 
     private void buildLayout() {
@@ -52,11 +57,13 @@ public class GridView extends VerticalLayout implements View {
     }
 
     private void initFilterBar() {
-        filterBar.setWidth("30%");
+        filterBar.setWidth(250, UNITS_PIXELS);
         filterBar.addComponent(titleFilter);
         filterBar.addComponent(directorFilter);
         filterBar.addComponent(genreFilter);
-        genreFilter.setData(genreService.findAll());
+        Set<Genre> genres = new HashSet<>();
+        genres = genreService.findAll();
+        genreFilter.setValue(genres);
         titleFilter.setPlaceholder("Titel ...");
         directorFilter.setPlaceholder("Regisseur ...");
     }

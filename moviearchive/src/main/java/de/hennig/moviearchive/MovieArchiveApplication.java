@@ -1,6 +1,5 @@
 package de.hennig.moviearchive;
 
-import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.repositories.MovieRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

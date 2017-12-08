@@ -35,7 +35,7 @@ public class MovieGrid extends Grid<Movie> {
 		addColumn(Movie::getPage).setCaption("Seite");
 		addColumn(Movie::getRunningTime).setCaption("Laufzeit");
 		addColumn(Movie::getDescription).setCaption("Handlung");
-		//this.setDataProvider(new MovieDataProvider(movieService));
+		this.setDataProvider(new MovieDataProvider(movieService));
 	}
 
 	public Optional<Movie> getSelectedMovie() {
