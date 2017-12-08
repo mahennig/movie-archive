@@ -1,6 +1,5 @@
 package de.hennig.moviearchive.userinterface.views;
 
-import com.beust.jcommander.internal.Sets;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
@@ -17,10 +16,6 @@ import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.services.GenreService;
 import de.hennig.moviearchive.userinterface.components.HorizontalLine;
 import de.hennig.moviearchive.userinterface.components.MovieGrid;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -44,28 +39,27 @@ public class GridView extends VerticalLayout implements View {
     public GridView() {
         loadApplicationContext();
         buildLayout();
-        addComponent(gridContainer);
-        setComponentAlignment(gridContainer, Alignment.TOP_CENTER);
+        addComponentsAndExpand(gridContainer);
+        setComponentAlignment(gridContainer, Alignment.MIDDLE_CENTER);
+        setMargin(new MarginInfo(true, false, true, false));
         setSizeFull();
-        setMargin(new MarginInfo(false, false, false, false));
     }
 
     private void buildLayout() {
         gridContainer.addComponent(filterBar);
         initFilterBar();
         gridContainer.addComponentsAndExpand(movieGrid);
+        movieGrid.setSizeFull();
     }
 
     private void initFilterBar() {
-        filterBar.setWidth(250, UNITS_PIXELS);
+        filterBar.setWidth(250, Unit.PIXELS);
         filterBar.addComponent(titleFilter);
         filterBar.addComponent(directorFilter);
         filterBar.addComponent(genreFilter);
-        Set<Genre> genres = new HashSet<>();
-        genres = genreService.findAll();
-        genreFilter.setValue(genres);
-        titleFilter.setPlaceholder("Titel ...");
-        directorFilter.setPlaceholder("Regisseur ...");
+        genreFilter.setItems(genreService.findAll());
+        titleFilter.setPlaceholder("Titel");
+        directorFilter.setPlaceholder("Regisseur");
     }
 
     private void loadApplicationContext() {

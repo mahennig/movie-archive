@@ -5,7 +5,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.Version;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomLayout;
@@ -29,8 +28,7 @@ public class AboutView extends VerticalLayout implements View {
                         + " Filmdatenbank " + VaadinIcons.COPYRIGHT + " Markus Hennig "
                         , ContentMode.HTML));
 
-        setSizeFull();
-        setMargin(new MarginInfo(false, false, false, false));
+        setMargin(false);
         addComponent(aboutContent);
         setComponentAlignment(aboutContent, Alignment.BOTTOM_CENTER);
     }
