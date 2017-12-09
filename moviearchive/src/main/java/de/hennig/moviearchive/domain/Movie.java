@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,138 +21,129 @@ import java.util.Set;
 @Entity
 public class Movie implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
-    @Column(name = "MOVIE_ID")
-    private Long id = -1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@NotNull
+	@Column(name = "MOVIE_ID")
+	private Long id = -1L;
 
-    @NotNull
-    @Column(name = "TITLE", unique = true)
-    private String title;
+	@NotNull
+	@Size(min = 2, message = "Movie title name must have at least two characters")
+	@Column(name = "TITLE", unique = true)
+	private String title;
 
-    @OneToOne(targetEntity = Person.class)
-    private Person director;
+	@OneToOne(targetEntity = Person.class)
+	private Person director;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "MOVIE_AND_ACTOR", joinColumns = {
-            @JoinColumn(name = "MOVIE_ID")}, inverseJoinColumns = {
-            @JoinColumn(name = "PERSON_ID")})
-    private Set<Person> cast = new HashSet<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "MOVIE_AND_ACTOR", joinColumns = { @JoinColumn(name = "MOVIE_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "PERSON_ID") })
+	private Set<Person> cast = new HashSet<>();
 
-    @Column(name = "YEAR")
-    private Integer year;
+	@Column(name = "YEAR")
+	private Integer year;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "MOVIE_AND_GENRE", joinColumns = {
-            @JoinColumn(name = "MOVIE_ID")}, inverseJoinColumns = {
-            @JoinColumn(name = "GENRE_ID")})
-    private Set<Genre> genres = new HashSet<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "MOVIE_AND_GENRE", joinColumns = { @JoinColumn(name = "MOVIE_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "GENRE_ID") })
+	private Set<Genre> genres = new HashSet<>();
 
-    @Column(name = "DESCRIPTION")
-    private String description;
+	@Column(name = "DESCRIPTION")
+	private String description;
 
-    @Column(name = "RUNNING_TIME")
-    private Long runningTime;
+	@Column(name = "RUNNING_TIME")
+	private Long runningTime;
 
-    @Column(name = "FOLDER")
-    private Integer folder;
+	@Column(name = "FOLDER")
+	private Integer folder;
 
-    @Column(name = "PAGE")
-    private Integer page;
+	@Column(name = "PAGE")
+	private Integer page;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public Person getDirector() {
-        return director;
-    }
+	public Person getDirector() {
+		return director;
+	}
 
-    public void setDirector(Person director) {
-        this.director = director;
-    }
+	public void setDirector(Person director) {
+		this.director = director;
+	}
 
-    public Set<Person> getCast() {
-        return cast;
-    }
+	public Set<Person> getCast() {
+		return cast;
+	}
 
-    public void setCast(Set<Person> cast) {
-        this.cast = cast;
-    }
+	public void setCast(Set<Person> cast) {
+		this.cast = cast;
+	}
 
-    public Integer getYear() {
-        return year;
-    }
+	public Integer getYear() {
+		return year;
+	}
 
-    public void setYear(Integer year) {
-        this.year = year;
-    }
+	public void setYear(Integer year) {
+		this.year = year;
+	}
 
-    public Set<Genre> getGenres() {
-        return genres;
-    }
+	public Set<Genre> getGenres() {
+		return genres;
+	}
 
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
+	public void setGenres(Set<Genre> genres) {
+		this.genres = genres;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Long getRunningTime() {
-        return runningTime;
-    }
+	public Long getRunningTime() {
+		return runningTime;
+	}
 
-    public void setRunningTime(Long runningTime) {
-        this.runningTime = runningTime;
-    }
+	public void setRunningTime(Long runningTime) {
+		this.runningTime = runningTime;
+	}
 
-    public Integer getFolder() {
-        return folder;
-    }
+	public Integer getFolder() {
+		return folder;
+	}
 
-    public void setFolder(Integer folder) {
-        this.folder = folder;
-    }
+	public void setFolder(Integer folder) {
+		this.folder = folder;
+	}
 
-    public Integer getPage() {
-        return page;
-    }
+	public Integer getPage() {
+		return page;
+	}
 
-    public void setPage(Integer page) {
-        this.page = page;
-    }
+	public void setPage(Integer page) {
+		this.page = page;
+	}
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", director=" + director +
-                ", cast=" + cast +
-                ", genres=" + genres +
-                ", description='" + description + '\'' +
-                ", runningTime='" + runningTime + '\'' +
-                ", folder=" + folder +
-                ", page=" + page +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Movie{" + "id=" + id + ", title='" + title + '\'' + ", director=" + director + ", cast=" + cast
+				+ ", genres=" + genres + ", description='" + description + '\'' + ", runningTime='" + runningTime + '\''
+				+ ", folder=" + folder + ", page=" + page + '}';
+	}
 }
