@@ -15,8 +15,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.userinterface.views.ErrorView;
-import de.hennig.moviearchive.userinterface.views.GridView;
-import de.hennig.moviearchive.userinterface.views.HeaderView;
+import de.hennig.moviearchive.userinterface.views.MovieView;
 import de.hennig.moviearchive.userinterface.views.AboutView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,6 @@ public class MovieArchiveUI extends UI {
     private SpringViewProvider viewProvider;
 
     VerticalLayout layout = new VerticalLayout();
-    HeaderView headerView;
 
     AboutView aboutView = new AboutView();
     VerticalLayout viewContainer = new VerticalLayout();
@@ -56,14 +54,10 @@ public class MovieArchiveUI extends UI {
         navigator.addProvider(viewProvider);
         navigator.setErrorView(ErrorView.class);
 
-        headerView = new HeaderView();
-        layout.addComponentAsFirst(headerView);
-        layout.setComponentAlignment(headerView, Alignment.TOP_CENTER);
-
         layout.addComponentsAndExpand(viewContainer);
         viewContainer.setMargin(new MarginInfo(false, false,false,false));
         layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
-        navigator.navigateTo(GridView.VIEW_NAME);
+        navigator.navigateTo(MovieView.VIEW_NAME);
 
     }
 

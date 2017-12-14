@@ -42,7 +42,7 @@ public class MovieService {
         movieRepository.delete(movie);
     }
 
-    public Movie getProduct(long movieId) {
+    public Movie getMovie(long movieId) {
         return movieRepository.findOne(movieId);
     }
 }
