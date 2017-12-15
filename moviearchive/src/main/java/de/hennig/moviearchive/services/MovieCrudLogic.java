@@ -113,7 +113,7 @@ public class MovieCrudLogic implements Serializable {
         view.editMovie(movie);
     }
 
-    public void newPerson(Person person){
+    public void newPerson(Person person) {
         personService.updatePerson(person);
     }
 
@@ -121,6 +121,10 @@ public class MovieCrudLogic implements Serializable {
         view.clearSelection();
         setFragmentParameter("new");
         view.editMovie(new Movie());
+    }
+
+    public void updateDirectors() {
+        view.updateDirectorBox();
     }
 
     public void rowSelected(Movie movie) {

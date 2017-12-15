@@ -46,6 +46,7 @@ public class MovieArchiveUI extends UI {
         layout.addComponent(aboutView);
         layout.setComponentAlignment(aboutView, Alignment.BOTTOM_CENTER);
         layout.setSizeFull();
+        layout.setMargin(new MarginInfo(false, false, false, false));
         layout.setSpacing(false);
     }
 
@@ -55,7 +56,7 @@ public class MovieArchiveUI extends UI {
         navigator.setErrorView(ErrorView.class);
 
         layout.addComponentsAndExpand(viewContainer);
-        viewContainer.setMargin(new MarginInfo(false, false,false,false));
+        viewContainer.setMargin(new MarginInfo(false, false, false, false));
         layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
         navigator.navigateTo(MovieView.VIEW_NAME);
 

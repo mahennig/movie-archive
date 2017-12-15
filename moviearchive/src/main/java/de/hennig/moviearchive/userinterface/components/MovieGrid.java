@@ -22,7 +22,7 @@ public class MovieGrid extends Grid<Movie> {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public MovieGrid() {
-        addColumn(Movie::getTitle).setCaption("Titel");
+        addColumn(Movie::getTitle).setCaption("Titel").setSortProperty("name");
         addColumn(Movie::getDirector).setCaption("Regisseur");
         addColumn(Movie::getYear).setCaption("Jahr");
         addColumn(Movie::getFolder).setCaption("Ordner");

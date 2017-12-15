@@ -37,11 +37,11 @@ public class TestDataService {
 
     Set<Genre> genres;
 
-    private final int COUNT = 10;
+    private final int COUNT = 50;
 
     private final int MAX_GENRES = 2;
 
-    private final int DESC_LENGTH = 70;
+    private final int DESC_LENGTH = 150;
 
     @PostConstruct
     public void init() {

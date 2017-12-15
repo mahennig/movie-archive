@@ -10,6 +10,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.domain.Movie;
@@ -35,6 +36,8 @@ public class MovieView extends VerticalLayout implements View {
 
     MovieForm form;
 
+    Panel filterBar;
+
     @Autowired
     private MovieDataProvider dataProvider;
 
@@ -54,21 +57,36 @@ public class MovieView extends VerticalLayout implements View {
 
     private MovieCrudLogic viewLogic;
 
-    private HorizontalLayout createTopBar() {
+    private Panel createTopBar() {
+        HorizontalLayout topLayout = new HorizontalLayout();
+        topLayout.setStyleName("background-color:coral");
+        Panel frame = new Panel();
+
         newMovie = new Button("Neuen Film hinzufügen");
         header = new Label("Filmdatenbank");
+        header.addStyleName("h2");
         filter = new TextField();
         filter.setPlaceholder("Suche ...");
         filter.addValueChangeListener(event -> filterDataProvider.setFilter(event.getValue()));
-        HorizontalLayout topLayout = new HorizontalLayout();
+
         topLayout.addComponentsAndExpand(header);
         topLayout.addComponent(filter);
         topLayout.addComponent(newMovie);
         newMovie.addClickListener(e -> viewLogic.newMovie());
         topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
-        topLayout.setMargin(new MarginInfo(false, false, true, false));
-        return topLayout;
+        topLayout.setMargin(new MarginInfo(true, true, false, true));
+        frame.setContent(topLayout);
+        return frame;
+    }
+
+    private Panel createFilterBar() {
+        Panel panel = new Panel();
+        panel.setCaption("Film Details");
+        form = formFactory.createForm(viewLogic);
+        updateDirectorBox();
+        panel.setContent(form);
+        return panel;
     }
 
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -86,7 +104,6 @@ public class MovieView extends VerticalLayout implements View {
     public Movie getSelectedRow() {
         return grid.getSelectedRow();
     }
-
 
     public void editMovie(Movie movie) {
         if (movie != null) {
@@ -106,12 +123,16 @@ public class MovieView extends VerticalLayout implements View {
         dataProvider.delete(movie);
     }
 
+    public void updateDirectorBox() {
+        form.setDirectors(personService.getAllPerson());
+    }
+
     @PostConstruct
     private void init() {
         viewLogic = logicFactory.createLogic(this);
         setSizeFull();
 
-        HorizontalLayout topLayout = createTopBar();
+        Panel topLayout = createTopBar();
 
         grid = new MovieGrid();
         grid.setSizeFull();
@@ -124,15 +145,17 @@ public class MovieView extends VerticalLayout implements View {
 
         barAndGridLayout.addComponent(topLayout);
         barAndGridLayout.addComponentsAndExpand(grid);
-        barAndGridLayout.setMargin(false);
+        barAndGridLayout.setMargin(new MarginInfo(false, false, true, false));
         barAndGridLayout.setSpacing(false);
 
-        addComponent(barAndGridLayout);
+        addComponentsAndExpand(barAndGridLayout);
 
-        form = formFactory.createForm(viewLogic);
-        form.setPerson(personService.getAllPerson());
+        //form = formFactory.createForm(viewLogic);
+        //updateDirectorBox();
         //form.setVisible(false);
-        addComponent(form);
+        filterBar = createFilterBar();
+        addComponent(filterBar);
+        setComponentAlignment(filterBar, Alignment.BOTTOM_CENTER);
 
         viewLogic.init();
     }

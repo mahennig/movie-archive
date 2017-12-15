@@ -21,9 +21,7 @@ import java.util.Set;
 public class MovieForm extends MovieFormDesign {
 
     MovieCrudLogic viewLogic;
-
     private Binder<Movie> binder = new Binder<>(Movie.class);
-
     Movie currentMovie;
 
     @SpringComponent
@@ -40,33 +38,33 @@ public class MovieForm extends MovieFormDesign {
         }
     }
 
+    private MovieForm(){
+
+    }
+
+    public void setDirectors(Set<Person> persons) {
+        directorBox.setItems(persons);
+    }
+
     private void onSave() {
         if (binder.writeBeanIfValid(currentMovie)) {
             viewLogic.saveMovie(currentMovie);
         }
     }
 
+    public void editMovie(Movie movie) {
+        currentMovie = movie;
+        setUpData();
+        deleteButton.setEnabled(movie != null && movie.getId() != -1);
+        String scrollScript = "window.document.getElementById('" + getId()
+                + "').scrollTop = 0;";
+        Page.getCurrent().getJavaScript().execute(scrollScript);
+    }
+
     private void onDelete() {
         if (currentMovie != null) {
             viewLogic.deleteMovie(currentMovie);
         }
-    }
-
-    public void setPerson(Set<Person> persons) {
-        directorBox.setItems(persons);
-    }
-
-    public void editMovie(Movie movie) {
-        currentMovie = movie;
-        setUpData();
-
-        deleteButton.setEnabled(movie != null && movie.getId() != -1);
-
-        // Scroll to the top
-        // As this is not a Panel, using JavaScript
-        String scrollScript = "window.document.getElementById('" + getId()
-                + "').scrollTop = 0;";
-        Page.getCurrent().getJavaScript().execute(scrollScript);
     }
 
     private void init(MovieCrudLogic logic) {
@@ -84,8 +82,9 @@ public class MovieForm extends MovieFormDesign {
     private void updateButtons(StatusChangeEvent event) {
         boolean changes = event.getBinder().hasChanges();
         boolean validationErrors = event.hasValidationErrors();
+        boolean movieNotNull = currentMovie!=null;
 
-        saveButton.setEnabled(!validationErrors && changes);
+        saveButton.setEnabled(!validationErrors && changes && movieNotNull);
         discardButton.setEnabled(changes);
     }
 
@@ -112,8 +111,7 @@ public class MovieForm extends MovieFormDesign {
             newPerson.setName(inputString);
             viewLogic.newPerson(newPerson);
 
-            directorBox.setItems();
-
+            viewLogic.updateDirectors();
             directorBox.setSelectedItem(newPerson);
         });
     }
