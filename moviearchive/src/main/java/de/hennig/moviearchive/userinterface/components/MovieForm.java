@@ -94,7 +94,7 @@ public class MovieForm extends MovieFormDesign {
         binder.forField(titleField).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(descriptionArea).bind(Movie::getDescription, Movie::setDescription);
 
-        directorBox.setItemCaptionGenerator(Person::getName);
+        initDirectorBox();
         binder.forField(directorBox).bind(Movie::getDirector, Movie::setDirector);
 
         saveButton.addClickListener(event -> onSave());
@@ -103,6 +103,21 @@ public class MovieForm extends MovieFormDesign {
         discardButton.addClickListener(event -> setUpData());
         binder.addStatusChangeListener(this::updateButtons);
     }
+
+    private void initDirectorBox(){
+        directorBox.setItemCaptionGenerator(Person::getName);
+        directorBox.setNewItemHandler(inputString -> {
+
+            Person newPerson = new Person();
+            newPerson.setName(inputString);
+            viewLogic.newPerson(newPerson);
+
+            directorBox.setItems();
+
+            directorBox.setSelectedItem(newPerson);
+        });
+    }
+
 
 
 }

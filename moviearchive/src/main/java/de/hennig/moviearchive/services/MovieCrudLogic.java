@@ -4,6 +4,7 @@ package de.hennig.moviearchive.services;
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
 import de.hennig.moviearchive.domain.Movie;
+import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.userinterface.MovieArchiveUI;
 import de.hennig.moviearchive.userinterface.views.MovieView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class MovieCrudLogic implements Serializable {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private PersonService personService;
 
     private MovieCrudLogic() {
     }
@@ -107,6 +111,10 @@ public class MovieCrudLogic implements Serializable {
             setFragmentParameter(movie.getId() + "");
         }
         view.editMovie(movie);
+    }
+
+    public void newPerson(Person person){
+        personService.updatePerson(person);
     }
 
     public void newMovie() {

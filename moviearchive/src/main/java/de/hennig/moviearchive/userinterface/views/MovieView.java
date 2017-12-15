@@ -45,7 +45,7 @@ public class MovieView extends VerticalLayout implements View {
     private MovieCrudLogic.MovieCrudLogicFactory logicFactory;
 
     private ConfigurableFilterDataProvider<Movie, Void, String> filterDataProvider;
-    private TextField titleFilter;
+    private TextField filter;
 
     private final HorizontalLayout gridContainer = new HorizontalLayout();
 
@@ -57,10 +57,12 @@ public class MovieView extends VerticalLayout implements View {
     private HorizontalLayout createTopBar() {
         newMovie = new Button("Neuen Film hinzufügen");
         header = new Label("Filmdatenbank");
-        titleFilter = new TextField();
-        titleFilter.setPlaceholder("Titel");
+        filter = new TextField();
+        filter.setPlaceholder("Suche ...");
+        filter.addValueChangeListener(event -> filterDataProvider.setFilter(event.getValue()));
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.addComponentsAndExpand(header);
+        topLayout.addComponent(filter);
         topLayout.addComponent(newMovie);
         newMovie.addClickListener(e -> viewLogic.newMovie());
         topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
@@ -149,4 +151,5 @@ public class MovieView extends VerticalLayout implements View {
                 .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
                 .getBean(PersonService.class);
     }
+
 }

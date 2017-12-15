@@ -39,10 +39,10 @@ public class MovieFormDesign extends VerticalLayout {
         HorizontalLayout inputBar = new HorizontalLayout();
         inputBar.addComponent(titleField);
         inputBar.addComponent(directorBox);
+
         inputBar.addComponentsAndExpand(descriptionArea);
         HorizontalLayout buttonBar = new HorizontalLayout();
         buttonBar.addComponents(saveButton, discardButton, deleteButton, cancelButton);
         addComponents(inputBar, buttonBar);
     }
-
 }
