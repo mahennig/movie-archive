@@ -53,6 +53,7 @@ public class MovieCrudLogic implements Serializable {
         setFragmentParameter("");
         view.clearSelection();
         view.editMovie(null);
+        view.hideForm();
     }
 
     private void setFragmentParameter(String movieId) {
@@ -121,6 +122,7 @@ public class MovieCrudLogic implements Serializable {
         view.clearSelection();
         setFragmentParameter("new");
         view.editMovie(new Movie());
+        view.showForm();
     }
 
     public void updateDirectors() {
@@ -129,6 +131,7 @@ public class MovieCrudLogic implements Serializable {
 
     public void rowSelected(Movie movie) {
         view.editMovie(movie);
+        view.showForm();
     }
 
 }

@@ -1,6 +1,8 @@
 package de.hennig.moviearchive.userinterface.components;
 
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -14,14 +16,12 @@ import org.slf4j.LoggerFactory;
 
 public class MovieFormDesign extends VerticalLayout {
 
-    Window subwindow;
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
     protected TextField titleField = new TextField("Titel");
     protected ComboBox<Person> directorBox = new ComboBox<>("Regisseur");
 
     protected TextArea descriptionArea = new TextArea("Handlung");
+
+    protected CountryComboBox countryBox = new CountryComboBox("Land");
 
     protected GenreSelect genreSelector = new GenreSelect("Genre");
 
@@ -37,10 +37,29 @@ public class MovieFormDesign extends VerticalLayout {
 
     public MovieFormDesign() {
         HorizontalLayout inputBar = new HorizontalLayout();
-        inputBar.addComponent(titleField);
-        inputBar.addComponent(directorBox);
+
+        VerticalLayout vertContainer1 = new VerticalLayout();
+        vertContainer1.setMargin(new MarginInfo(false, false, false, false));
+        vertContainer1.addComponent(titleField);
+        vertContainer1.addComponent(countryBox);
+        inputBar.addComponent(vertContainer1);
+        inputBar.setComponentAlignment(vertContainer1, Alignment.TOP_LEFT);
+
+
+        VerticalLayout vertContainer2 = new VerticalLayout();
+        vertContainer2.setMargin(new MarginInfo(false, false, false, false));
+        vertContainer2.addComponent(directorBox);
+        inputBar.addComponent(vertContainer2);
+        vertContainer2.setSizeFull();
+        inputBar.setComponentAlignment(vertContainer2, Alignment.TOP_CENTER);
 
         inputBar.addComponentsAndExpand(descriptionArea);
+        inputBar.setComponentAlignment(descriptionArea, Alignment.TOP_RIGHT);
+
+        VerticalLayout vertContainer3 = new VerticalLayout();
+        vertContainer3.addComponent(runningTime);
+        inputBar.addComponent(vertContainer3);
+
         HorizontalLayout buttonBar = new HorizontalLayout();
         buttonBar.addComponents(saveButton, discardButton, deleteButton, cancelButton);
         addComponents(inputBar, buttonBar);

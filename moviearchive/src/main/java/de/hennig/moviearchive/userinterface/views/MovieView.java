@@ -57,10 +57,9 @@ public class MovieView extends VerticalLayout implements View {
 
     private MovieCrudLogic viewLogic;
 
-    private Panel createTopBar() {
+    private HorizontalLayout createTopBar() {
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setStyleName("background-color:coral");
-        Panel frame = new Panel();
 
         newMovie = new Button("Neuen Film hinzufügen");
         header = new Label("Filmdatenbank");
@@ -75,9 +74,8 @@ public class MovieView extends VerticalLayout implements View {
         newMovie.addClickListener(e -> viewLogic.newMovie());
         topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
-        topLayout.setMargin(new MarginInfo(true, true, false, true));
-        frame.setContent(topLayout);
-        return frame;
+        topLayout.setMargin(new MarginInfo(false, true, false, true));
+        return topLayout;
     }
 
     private Panel createFilterBar() {
@@ -132,7 +130,7 @@ public class MovieView extends VerticalLayout implements View {
         viewLogic = logicFactory.createLogic(this);
         setSizeFull();
 
-        Panel topLayout = createTopBar();
+        HorizontalLayout topLayout = createTopBar();
 
         grid = new MovieGrid();
         grid.setSizeFull();
@@ -150,9 +148,6 @@ public class MovieView extends VerticalLayout implements View {
 
         addComponentsAndExpand(barAndGridLayout);
 
-        //form = formFactory.createForm(viewLogic);
-        //updateDirectorBox();
-        //form.setVisible(false);
         filterBar = createFilterBar();
         addComponent(filterBar);
         setComponentAlignment(filterBar, Alignment.BOTTOM_CENTER);
@@ -173,6 +168,14 @@ public class MovieView extends VerticalLayout implements View {
         this.personService = WebApplicationContextUtils
                 .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
                 .getBean(PersonService.class);
+    }
+
+    public void hideForm(){
+        form.setVisible(false);
+    }
+
+    public void showForm(){
+        form.setVisible(true);
     }
 
 }

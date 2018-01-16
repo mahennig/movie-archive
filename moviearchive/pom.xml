@@ -167,8 +167,10 @@
                         </configuration>
                         <goals>
                             <goal>clean</goal>
-                            <goal>update-theme</goal>
+                            <goal>resources</goal>
                             <goal>update-widgetset</goal>
+                            <goal>update-theme</goal>
+                            <goal>compile-theme</goal>
                             <goal>compile</goal>
                         </goals>
                     </execution>

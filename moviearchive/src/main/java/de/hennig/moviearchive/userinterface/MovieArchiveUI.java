@@ -1,5 +1,6 @@
 package de.hennig.moviearchive.userinterface;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -25,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 
 @SuppressWarnings("serial")
 @Title("Film Datenbank")
+@Theme("valo")
 @SpringUI
 public class MovieArchiveUI extends UI {
 

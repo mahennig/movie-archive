@@ -19,6 +19,8 @@ import java.util.Optional;
 @UIScope
 public class MovieGrid extends Grid<Movie> {
 
+    private int MAX_DESC_LENGTH = 15;
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public MovieGrid() {
@@ -28,7 +30,7 @@ public class MovieGrid extends Grid<Movie> {
         addColumn(Movie::getFolder).setCaption("Ordner");
         addColumn(Movie::getPage).setCaption("Seite");
         addColumn(Movie::getRunningTime).setCaption("Laufzeit");
-        addColumn(Movie::getDescription).setCaption("Handlung");
+        addColumn(Movie::getDescription).setCaption("Handlung").setWidth(300);
     }
 
     public void refresh(Movie movie) {
@@ -38,4 +40,10 @@ public class MovieGrid extends Grid<Movie> {
     public Movie getSelectedRow() {
         return asSingleSelect().getValue();
     }
+
+    private String truncateDesc(String description) {
+        return description.substring(0, MAX_DESC_LENGTH) + " ...";
+    }
+
+
 }
