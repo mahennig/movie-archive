@@ -43,7 +43,7 @@ public class MovieForm extends MovieFormDesign {
     }
 
     public void setDirectors(Set<Person> persons) {
-        directorBox.setItems(persons);
+        director.setItems(persons);
     }
 
     private void onSave() {
@@ -90,11 +90,11 @@ public class MovieForm extends MovieFormDesign {
 
     @PostConstruct
     private void init() {
-        binder.forField(titleField).bind(Movie::getTitle, Movie::setTitle);
-        binder.forField(descriptionArea).bind(Movie::getDescription, Movie::setDescription);
+        binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
+        binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
 
         initDirectorBox();
-        binder.forField(directorBox).bind(Movie::getDirector, Movie::setDirector);
+        binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
 
         saveButton.addClickListener(event -> onSave());
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
@@ -104,15 +104,15 @@ public class MovieForm extends MovieFormDesign {
     }
 
     private void initDirectorBox(){
-        directorBox.setItemCaptionGenerator(Person::getName);
-        directorBox.setNewItemHandler(inputString -> {
+        director.setItemCaptionGenerator(Person::getName);
+        director.setNewItemHandler(inputString -> {
 
             Person newPerson = new Person();
             newPerson.setName(inputString);
             viewLogic.newPerson(newPerson);
 
             viewLogic.updateDirectors();
-            directorBox.setSelectedItem(newPerson);
+            director.setSelectedItem(newPerson);
         });
     }
 
