@@ -2,10 +2,12 @@ package de.hennig.moviearchive.userinterface.components;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
+import de.hennig.moviearchive.domain.core.GenreData;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -38,7 +42,7 @@ public class MovieForm extends MovieFormDesign {
         }
     }
 
-    private MovieForm(){
+    private MovieForm() {
 
     }
 
@@ -82,19 +86,36 @@ public class MovieForm extends MovieFormDesign {
     private void updateButtons(StatusChangeEvent event) {
         boolean changes = event.getBinder().hasChanges();
         boolean validationErrors = event.hasValidationErrors();
-        boolean movieNotNull = currentMovie!=null;
+        boolean movieNotNull = currentMovie != null;
 
         saveButton.setEnabled(!validationErrors && changes && movieNotNull);
         discardButton.setEnabled(changes);
     }
 
+
+    /*
+        Binding all fields with current Movie Bean
+     */
     @PostConstruct
     private void init() {
         binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
-
         initDirectorBox();
+        binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
+        binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
+        binder.forField(runtime)
+                .withConverter(new StringToIntegerConverter("Value must be a integer"))
+                .withNullRepresentation(0)
+                .bind(Movie::getRunningTime, Movie::setRunningTime);
+        binder.forField(folder)
+                .withConverter(new StringToIntegerConverter("Value must be a integer"))
+                .withNullRepresentation(0)
+                .bind(Movie::getFolder, Movie::setFolder);
+        binder.forField(page)
+                .withConverter(new StringToIntegerConverter("Value must be a integer"))
+                .withNullRepresentation(0)
+                .bind(Movie::getPage, Movie::setPage);
 
         saveButton.addClickListener(event -> onSave());
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
@@ -103,7 +124,7 @@ public class MovieForm extends MovieFormDesign {
         binder.addStatusChangeListener(this::updateButtons);
     }
 
-    private void initDirectorBox(){
+    private void initDirectorBox() {
         director.setItemCaptionGenerator(Person::getName);
         director.setNewItemHandler(inputString -> {
 

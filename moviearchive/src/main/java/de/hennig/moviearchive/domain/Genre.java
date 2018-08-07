@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
+@Deprecated
 public class Genre implements Serializable {
 
     @Id

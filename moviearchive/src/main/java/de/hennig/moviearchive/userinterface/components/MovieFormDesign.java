@@ -3,14 +3,7 @@ package de.hennig.moviearchive.userinterface.components;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.slider.SliderOrientation;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Person;
 
 import static javafx.geometry.Orientation.HORIZONTAL;
@@ -20,13 +13,14 @@ public class MovieFormDesign extends VerticalLayout {
     protected TextField title = new TextField("Titel");
     protected ComboBox<Person> director = new ComboBox<>("Regisseur");
     protected TextArea description = new TextArea("Handlung");
+    protected TextField runtime = new TextField("Laufzeit in Minuten");
     protected CountryComboBox country = new CountryComboBox("Land");
     protected GenreSelect genre = new GenreSelect("Genre");
-    protected Slider runningTime = new Slider(1, 300);
     protected YearComboBox year = new YearComboBox("Erscheinungsjahr");
     protected TextField folder = new TextField("Ordner");
     protected TextField page = new TextField("Seite");
-    protected TextField actor = new TextField("Schauspieler");
+
+    protected ComboBox<Person> actors = new ComboBox<>("Schauspieler");
     protected Button addActorButton = new Button(VaadinIcons.PLUS);
 
     protected Button saveButton = new Button("Speichern", VaadinIcons.SAFE);
@@ -56,10 +50,8 @@ public class MovieFormDesign extends VerticalLayout {
         // Description and Running Time
         VerticalLayout vertContainer3 = new VerticalLayout();
         vertContainer3.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer3.addComponents(description, runningTime);
-        runningTime.setOrientation(SliderOrientation.HORIZONTAL);
-        runningTime.setCaption("Laufzeit in Minuten");
-        runningTime.setWidth(250, Unit.PIXELS);
+        vertContainer3.addComponents(description, runtime);
+        runtime.setWidth(250, Unit.PIXELS);
         description.setWidth(250, Unit.PIXELS);
         inputBar.addComponents(vertContainer3);
         inputBar.setComponentAlignment(vertContainer3, Alignment.TOP_CENTER);
@@ -77,9 +69,9 @@ public class MovieFormDesign extends VerticalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         vertContainer5.setMargin(new MarginInfo(false, false, false, false));
         vertContainer5.addComponent(horizontalLayout);
-        horizontalLayout.addComponents(actor, addActorButton);
+        horizontalLayout.addComponents(actors, addActorButton);
         horizontalLayout.setComponentAlignment(addActorButton, Alignment.MIDDLE_RIGHT);
-        horizontalLayout.setComponentAlignment(actor, Alignment.MIDDLE_LEFT);
+        horizontalLayout.setComponentAlignment(actors, Alignment.MIDDLE_LEFT);
         inputBar.addComponent(vertContainer5);
         inputBar.setComponentAlignment(vertContainer5, Alignment.TOP_RIGHT);
 

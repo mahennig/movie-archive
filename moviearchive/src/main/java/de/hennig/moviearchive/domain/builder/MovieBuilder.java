@@ -47,7 +47,7 @@ public class MovieBuilder extends AbstractBuilder<Movie> {
         return this;
     }
 
-    public MovieBuilder withGenres(Set<Genre> genres) {
+    public MovieBuilder withGenres(Set<String> genres) {
         entity.setGenres(genres);
         return this;
     }

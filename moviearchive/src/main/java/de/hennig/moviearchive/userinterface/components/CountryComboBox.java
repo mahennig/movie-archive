@@ -7,43 +7,32 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import de.hennig.moviearchive.domain.core.CountryData;
+import de.hennig.moviearchive.domain.core.GenreData;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class CountryComboBox extends ComboBox<CountryData> {
+public class CountryComboBox extends ComboBox<String> {
 
     public CountryComboBox(String caption) {
         this.setCaption(caption);
-
-        List<CountryData> countriesData = new ArrayList<CountryData>();
-        countriesData.add(new CountryData("USA"));
-        countriesData.add(new CountryData("Deutschland"));
-
-        this.setItems(countriesData);
-        this.setItemIconGenerator(country -> {
-            String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-            String flagName = null;
-            switch (country.getName()) {
-                case "USA":
-                    flagName = "flag-usa";
-                    break;
-                case "Deutschland":
-                    flagName = "flag-germany";
-                    break;
-            }
-
-            Resource resource = new FileResource(new File(
-                    (basepath + "/WEB-INF/classes/flags/" + flagName + ".png")));
-            return resource;
-        });
-        this.setItemCaptionGenerator(new ItemCaptionGenerator<CountryData>() {
-            @Override
-            public String apply(CountryData item) {
-                return item.getName();
-            }
-        });
-
+        initCountryComboBox();
     }
+
+    private void initCountryComboBox() {
+        this.setItems(loadCountries());
+    }
+
+    private Set<String> loadCountries() {
+        Set set = new HashSet();
+        for (CountryData data : CountryData.values()) {
+            set.add(data.getName());
+        }
+        return set;
+    }
+
+
 }
