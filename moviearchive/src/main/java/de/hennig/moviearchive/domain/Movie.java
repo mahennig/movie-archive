@@ -85,6 +85,10 @@ public class Movie implements Serializable {
         this.cast = cast;
     }
 
+    public void addActor(Person actor) {
+        cast.add(actor);
+    }
+
     public Integer getYear() {
         return year;
     }

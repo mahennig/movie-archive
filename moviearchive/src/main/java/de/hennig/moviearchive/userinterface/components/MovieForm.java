@@ -7,7 +7,6 @@ import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
-import de.hennig.moviearchive.domain.core.GenreData;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -46,6 +43,10 @@ public class MovieForm extends MovieFormDesign {
 
     }
 
+    public void setActors(Set<Person> persons) {
+        actors.setItems(persons);
+    }
+
     public void setDirectors(Set<Person> persons) {
         director.setItems(persons);
     }
@@ -54,6 +55,14 @@ public class MovieForm extends MovieFormDesign {
         if (binder.writeBeanIfValid(currentMovie)) {
             viewLogic.saveMovie(currentMovie);
         }
+    }
+
+    private void onAddActor() {
+        viewLogic.addActor(currentMovie, actors.getValue());
+    }
+
+    private void onRemoveActor(){
+        viewLogic.removeActor(currentMovie, actors.getValue());
     }
 
     public void editMovie(Movie movie) {
@@ -98,9 +107,10 @@ public class MovieForm extends MovieFormDesign {
      */
     @PostConstruct
     private void init() {
+        initDirectorBox();
+        initActorBox();
         binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
-        initDirectorBox();
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
@@ -121,6 +131,8 @@ public class MovieForm extends MovieFormDesign {
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
         deleteButton.addClickListener(event -> onDelete());
         discardButton.addClickListener(event -> setUpData());
+        addActorButton.addClickListener(event -> onAddActor());
+        removeActorButton.addClickListener(event -> onRemoveActor());
         binder.addStatusChangeListener(this::updateButtons);
     }
 
@@ -136,6 +148,20 @@ public class MovieForm extends MovieFormDesign {
             director.setSelectedItem(newPerson);
         });
     }
+
+    private void initActorBox() {
+        actors.setItemCaptionGenerator(Person::getName);
+        actors.setNewItemHandler(inputString -> {
+
+            Person newPerson = new Person();
+            newPerson.setName(inputString);
+            viewLogic.newPerson(newPerson);
+
+            viewLogic.updateDirectors();
+            actors.setSelectedItem(newPerson);
+        });
+    }
+
 
 
 

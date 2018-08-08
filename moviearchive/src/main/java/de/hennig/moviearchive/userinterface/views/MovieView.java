@@ -83,6 +83,7 @@ public class MovieView extends VerticalLayout implements View {
         panel.setCaption("Film Details");
         form = formFactory.createForm(viewLogic);
         updateDirectorBox();
+        updateActorsBox();
         panel.setContent(form);
         return panel;
     }
@@ -101,6 +102,10 @@ public class MovieView extends VerticalLayout implements View {
 
     public Movie getSelectedRow() {
         return grid.getSelectedRow();
+    }
+
+    public void refreshGrid(Movie movie) {
+        grid.refresh(movie);
     }
 
     public void editMovie(Movie movie) {
@@ -123,6 +128,10 @@ public class MovieView extends VerticalLayout implements View {
 
     public void updateDirectorBox() {
         form.setDirectors(personService.getAllPerson());
+    }
+
+    public void updateActorsBox() {
+        form.setActors(personService.getAllPerson());
     }
 
     @PostConstruct
