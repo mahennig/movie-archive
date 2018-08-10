@@ -115,7 +115,6 @@ public class MovieForm extends MovieFormDesign {
         boolean changes = event.getBinder().hasChanges();
         boolean validationErrors = event.hasValidationErrors();
         boolean movieNotNull = currentMovie != null;
-
         saveButton.setEnabled(!validationErrors && changes && movieNotNull);
         discardButton.setEnabled(changes);
     }

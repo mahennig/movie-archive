@@ -11,6 +11,8 @@ import static javafx.geometry.Orientation.HORIZONTAL;
 
 public class MovieFormDesign extends VerticalLayout {
 
+    HorizontalLayout inputBar = new HorizontalLayout();
+
     protected TextField title = new TextField("Titel");
     protected ComboBox<Person> director = new ComboBox<Person>("Regisseur");
     protected TextArea description = new TextArea("Handlung");
@@ -31,7 +33,7 @@ public class MovieFormDesign extends VerticalLayout {
     protected Button cancelButton = new Button("Abbrechen", VaadinIcons.FILE_REMOVE);
 
     public MovieFormDesign() {
-        HorizontalLayout inputBar = new HorizontalLayout();
+
         inputBar.setResponsive(true);
         inputBar.setSizeFull();
 
