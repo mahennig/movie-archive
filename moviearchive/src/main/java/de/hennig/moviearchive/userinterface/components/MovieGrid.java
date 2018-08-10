@@ -20,10 +20,11 @@ public class MovieGrid extends Grid<Movie> {
     public MovieGrid() {
 
         Column<Movie, String> nameCol = addColumn(Movie::getTitle).setCaption("Titel");
-        addColumn(Movie::getDirector).setCaption("Regisseur").setWidth(300);
+        addColumn(Movie::getDirector).setCaption("Regisseur").setWidth(200);
+        addColumn(Movie::getYear).setCaption("Jahr").setWidth(100);
+        addColumn(Movie::getCountry).setCaption("Land").setWidth(100);
         addColumn(Movie::getCast).setCaption("Schauspieler").setWidth(400);
         addColumn(Movie::getGenres).setCaption("Genre's").setWidth(300);
-        addColumn(Movie::getYear).setCaption("Jahr").setWidth(100);
         addColumn(Movie::getFolder).setCaption("Ordner").setWidth(70);
         addColumn(Movie::getPage).setCaption("Seite").setWidth(70);
         addColumn(Movie::getRunningTime).setCaption("Laufzeit").setWidth(100);
@@ -34,6 +35,7 @@ public class MovieGrid extends Grid<Movie> {
     public void refresh(Movie movie) {
         getDataCommunicator().refresh(movie);
     }
+
 
     public Movie getSelectedRow() {
         Movie movie = asSingleSelect().getValue();

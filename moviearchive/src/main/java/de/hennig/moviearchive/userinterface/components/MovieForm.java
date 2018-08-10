@@ -5,10 +5,12 @@ import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -58,11 +60,22 @@ public class MovieForm extends MovieFormDesign {
     }
 
     private void onAddActor() {
+        if (currentMovie == null) {
+            sendNoMovieSelectedNotication();
+        }
         viewLogic.addActor(currentMovie, actors.getValue());
     }
 
-    private void onRemoveActor(){
+    private void onRemoveActor() {
+        if (currentMovie == null) {
+            sendNoMovieSelectedNotication();
+        }
         viewLogic.removeActor(currentMovie, actors.getValue());
+    }
+
+    private void sendNoMovieSelectedNotication() {
+        new Notification("Warnung", "Es wurde kein Film ausgewählt!", Notification.Type.WARNING_MESSAGE, true)
+                .show(Page.getCurrent());
     }
 
     public void editMovie(Movie movie) {
@@ -77,6 +90,10 @@ public class MovieForm extends MovieFormDesign {
     private void onDelete() {
         if (currentMovie != null) {
             viewLogic.deleteMovie(currentMovie);
+        } else {
+            if (currentMovie == null) {
+                sendNoMovieSelectedNotication();
+            }
         }
     }
 
@@ -161,8 +178,6 @@ public class MovieForm extends MovieFormDesign {
             actors.setSelectedItem(newPerson);
         });
     }
-
-
 
 
 }

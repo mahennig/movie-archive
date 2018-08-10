@@ -37,52 +37,69 @@ public class MovieFormDesign extends VerticalLayout {
 
         // Title, Year, Director
         VerticalLayout vertContainer1 = new VerticalLayout();
+        vertContainer1.setWidth(130, Unit.PERCENTAGE);
         vertContainer1.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer1.addComponents(title, year, director);
+        vertContainer1.addComponents(title, country, director);
+        title.setSizeFull();
+        country.setSizeFull();
+        director.setSizeFull();
         inputBar.addComponent(vertContainer1);
         inputBar.setComponentAlignment(vertContainer1, Alignment.TOP_LEFT);
 
         // Country, Folder, Page
         VerticalLayout vertContainer2 = new VerticalLayout();
+        vertContainer2.setWidth(70, Unit.PERCENTAGE);
         vertContainer2.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer2.addComponents(country, folder, page);
+        vertContainer2.addComponents(year, folder, page);
+        year.setSizeFull();
+        folder.setSizeFull();
+        page.setSizeFull();
         inputBar.addComponent(vertContainer2);
-        inputBar.setComponentAlignment(vertContainer2, Alignment.TOP_CENTER);
+        inputBar.setComponentAlignment(vertContainer2, Alignment.TOP_RIGHT);
 
-        // Description and Running Time
+        // Actors and Runtime
         VerticalLayout vertContainer3 = new VerticalLayout();
         vertContainer3.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer3.addComponents(description, runtime);
-        runtime.setWidth(250, Unit.PIXELS);
-        description.setWidth(250, Unit.PIXELS);
-        inputBar.addComponents(vertContainer3);
-        inputBar.setComponentAlignment(vertContainer3, Alignment.TOP_CENTER);
+        description.setWidth("100%");
+        inputBar.addComponent(vertContainer3);
+        HorizontalLayout buttonActorContainer = new HorizontalLayout();
+        buttonActorContainer.setMargin(new MarginInfo(false, false, false, false));
+        buttonActorContainer.addComponents(addActorButton, removeActorButton);
+        buttonActorContainer.setComponentAlignment(addActorButton, Alignment.MIDDLE_LEFT);
+        buttonActorContainer.setComponentAlignment(removeActorButton, Alignment.MIDDLE_RIGHT);
+        vertContainer3.addComponents(actors, buttonActorContainer, runtime);
+        vertContainer3.setComponentAlignment(runtime, Alignment.BOTTOM_CENTER);
+        actors.setSizeFull();
+        addActorButton.setSizeFull();
+        deleteButton.setSizeFull();
+        runtime.setSizeFull();
+        inputBar.addComponent(vertContainer3);
+        inputBar.setComponentAlignment(vertContainer3, Alignment.TOP_RIGHT);
 
-        // Genre
+        // Description
         VerticalLayout vertContainer4 = new VerticalLayout();
         vertContainer4.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer4.addComponents(genre);
-        genre.setHeight(190, Unit.PIXELS);
-        inputBar.addComponent(vertContainer4);
-        inputBar.setComponentAlignment(vertContainer4, Alignment.TOP_CENTER);
+        vertContainer4.addComponents(description);
+        description.setWidth("100%");
+        description.setHeight(190, Unit.PIXELS); //222px
 
-        // Actors
+        inputBar.addComponents(vertContainer4);
+        inputBar.setComponentAlignment(vertContainer4, Alignment.TOP_LEFT);
+
+
+        // Genre
         VerticalLayout vertContainer5 = new VerticalLayout();
-        prepareActorArea(inputBar, vertContainer5);
+        vertContainer5.setMargin(new MarginInfo(false, false, false, false));
+        vertContainer5.addComponents(genre);
+        vertContainer5.setComponentAlignment(genre, Alignment.MIDDLE_LEFT);
+        genre.setHeight(190, Unit.PIXELS);
+        genre.setWidth("100%");
         inputBar.addComponent(vertContainer5);
-        vertContainer5.addComponents(actors, addActorButton, removeActorButton);
-        addActorButton.setSizeFull();
-        removeActorButton.setSizeFull();
-        inputBar.addComponent(vertContainer5);
-        inputBar.setComponentAlignment(vertContainer5, Alignment.TOP_RIGHT);
+        inputBar.setComponentAlignment(vertContainer5, Alignment.TOP_LEFT);
 
         // Buttons
         HorizontalLayout buttonBar = new HorizontalLayout();
         buttonBar.addComponents(saveButton, discardButton, deleteButton, cancelButton);
         addComponents(inputBar, buttonBar);
-    }
-
-    private void prepareActorArea(HorizontalLayout inputBar, VerticalLayout vertContainer5) {
-
     }
 }

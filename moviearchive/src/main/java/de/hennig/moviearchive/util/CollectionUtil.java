@@ -16,9 +16,9 @@ public class CollectionUtil {
 
     public static List<Integer> getYearCollection() {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date()); //heute
+        cal.setTime(new Date());
         int currentYear = cal.get(Calendar.YEAR);
-        Stream<Integer> intStream = IntStream.range(startYear, currentYear).boxed();
+        Stream<Integer> intStream = IntStream.range(startYear, currentYear + 2).boxed();
         return intStream.collect(Collectors.toList());
     }
 

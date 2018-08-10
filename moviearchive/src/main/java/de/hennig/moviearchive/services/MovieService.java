@@ -40,11 +40,8 @@ public class MovieService {
         return Lists.newArrayList(movieRepository.findAll()).size();
     }
 
-    public Movie updateMovie(Movie movie) {
-        return movieRepository.save(movie);
-    }
-
     public void deleteMovie(Movie movie) {
+        logger.info(String.format("Delete Movie [%s]", movie));
         movieRepository.delete(movie);
     }
 
@@ -61,8 +58,6 @@ public class MovieService {
         } else {
             logger.info(String.format("Actor [%s] not part of selected Movie", actor));
         }
-
-
     }
 
     public void addActor(Movie movie, Person actor) {
