@@ -40,6 +40,7 @@ public class MovieFormDesign extends VerticalLayout {
         vertContainer1.setWidth(130, Unit.PERCENTAGE);
         vertContainer1.setMargin(new MarginInfo(false, false, false, false));
         vertContainer1.addComponents(title, country, director);
+        country.setEnabled(true);
         title.setSizeFull();
         country.setSizeFull();
         director.setSizeFull();
@@ -65,13 +66,14 @@ public class MovieFormDesign extends VerticalLayout {
         HorizontalLayout buttonActorContainer = new HorizontalLayout();
         buttonActorContainer.setMargin(new MarginInfo(false, false, false, false));
         buttonActorContainer.addComponents(addActorButton, removeActorButton);
-        buttonActorContainer.setComponentAlignment(addActorButton, Alignment.MIDDLE_LEFT);
-        buttonActorContainer.setComponentAlignment(removeActorButton, Alignment.MIDDLE_RIGHT);
+        buttonActorContainer.setComponentAlignment(addActorButton, Alignment.MIDDLE_CENTER);
+        buttonActorContainer.setComponentAlignment(removeActorButton, Alignment.MIDDLE_CENTER);
+        buttonActorContainer.setSizeFull();
         vertContainer3.addComponents(actors, buttonActorContainer, runtime);
         vertContainer3.setComponentAlignment(runtime, Alignment.BOTTOM_CENTER);
         actors.setSizeFull();
         addActorButton.setSizeFull();
-        deleteButton.setSizeFull();
+        removeActorButton.setSizeFull();
         runtime.setSizeFull();
         inputBar.addComponent(vertContainer3);
         inputBar.setComponentAlignment(vertContainer3, Alignment.TOP_RIGHT);

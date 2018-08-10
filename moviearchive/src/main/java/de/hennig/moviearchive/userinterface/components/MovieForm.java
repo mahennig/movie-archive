@@ -42,7 +42,7 @@ public class MovieForm extends MovieFormDesign {
     }
 
     private MovieForm() {
-
+        this.setVisible(false);
     }
 
     public void setActors(Set<Person> persons) {
@@ -56,6 +56,7 @@ public class MovieForm extends MovieFormDesign {
     private void onSave() {
         if (binder.writeBeanIfValid(currentMovie)) {
             viewLogic.saveMovie(currentMovie);
+            viewLogic.hideSelectView();
         }
     }
 
@@ -90,6 +91,7 @@ public class MovieForm extends MovieFormDesign {
     private void onDelete() {
         if (currentMovie != null) {
             viewLogic.deleteMovie(currentMovie);
+            viewLogic.hideSelectView();
         } else {
             if (currentMovie == null) {
                 sendNoMovieSelectedNotication();
@@ -128,6 +130,7 @@ public class MovieForm extends MovieFormDesign {
         initActorBox();
         binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
+        binder.forField(year).bind(Movie::getYear, Movie::setYear);
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);

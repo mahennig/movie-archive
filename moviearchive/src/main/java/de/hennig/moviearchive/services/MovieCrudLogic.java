@@ -145,5 +145,9 @@ public class MovieCrudLogic implements Serializable {
         view.showForm();
     }
 
+    public void hideSelectView(){
+        view.hideForm();
+    }
+
 }
 
