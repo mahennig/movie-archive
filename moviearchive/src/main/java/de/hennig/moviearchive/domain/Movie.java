@@ -152,7 +152,7 @@ public class Movie implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", director=" + director +
-                ", cast=" + cast +
+                ", cast=" + cast.toString() +
                 ", year=" + year +
                 ", genres=" + genres.toString() +
                 ", description='" + description + '\'' +

@@ -32,7 +32,6 @@ public class MovieGrid extends Grid<Movie> {
         addColumn(Movie::getDirector).setCaption("Regisseur").setWidth(200);
         addColumn(Movie::getYear).setCaption("Jahr").setWidth(100);
         addColumn(Movie::getCountry).setCaption("Land").setWidth(100);
-        addColumn(movie -> loadCountryFlag(movie.getCountry()), new ImageRenderer()).setDescriptionGenerator(mov -> mov.toString()).setWidth(65).setCaption("Flagge");
         addColumn(Movie::getCast).setCaption("Schauspieler").setWidth(400);
         addColumn(Movie::getGenres).setCaption("Genre's").setWidth(300);
         addColumn(Movie::getFolder).setCaption("Ordner").setWidth(70);
