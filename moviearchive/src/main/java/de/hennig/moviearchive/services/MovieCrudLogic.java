@@ -3,6 +3,7 @@ package de.hennig.moviearchive.services;
 
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.userinterface.MovieArchiveUI;
@@ -107,11 +108,13 @@ public class MovieCrudLogic implements Serializable {
 
     public void addActor(Movie movie, Person person) {
         movieService.addActor(movie, person);
+        view.updateMovie(movie);
         view.refreshGrid(movie);
     }
 
     public void removeActor(Movie movie, Person person) {
         movieService.removeActor(movie, person);
+        view.updateMovie(movie);
         view.refreshGrid(movie);
     }
 

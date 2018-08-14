@@ -34,15 +34,16 @@ public class MovieFormDesign extends VerticalLayout {
 
     public MovieFormDesign() {
 
+        super.setSizeFull();
+
         inputBar.setResponsive(true);
         inputBar.setSizeFull();
 
         // Title, Year, Director
         VerticalLayout vertContainer1 = new VerticalLayout();
-        vertContainer1.setWidth(130, Unit.PERCENTAGE);
         vertContainer1.setMargin(new MarginInfo(false, false, false, false));
-        vertContainer1.addComponents(title, country, director);
-        country.setEnabled(true);
+        vertContainer1.setSizeFull();
+        vertContainer1.addComponentsAndExpand(title, country, director);
         title.setSizeFull();
         country.setSizeFull();
         director.setSizeFull();
@@ -51,7 +52,7 @@ public class MovieFormDesign extends VerticalLayout {
 
         // Country, Folder, Page
         VerticalLayout vertContainer2 = new VerticalLayout();
-        vertContainer2.setWidth(70, Unit.PERCENTAGE);
+        vertContainer2.setSizeFull();
         vertContainer2.setMargin(new MarginInfo(false, false, false, false));
         vertContainer2.addComponents(year, folder, page);
         year.setSizeFull();

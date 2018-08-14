@@ -41,7 +41,7 @@ public class TestDataService {
 
     Random r = new Random();
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         cleanRepositories();
         createMovies();
