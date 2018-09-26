@@ -16,8 +16,7 @@ public class MovieFormDesign extends VerticalLayout {
     protected TextField title = new TextField("Titel");
     protected ComboBox<Person> director = new ComboBox<Person>("Regisseur");
     protected TextArea description = new TextArea("Handlung");
-    protected TextField runtime = new TextField("Laufzeit in Minuten");
-    protected CountryComboBox country = new CountryComboBox("Land");
+    protected CountrySelect country = new CountrySelect("Land");
     protected GenreSelect genre = new GenreSelect("Genre");
     protected YearComboBox year = new YearComboBox("Erscheinungsjahr");
     protected TextField folder = new TextField("Ordner");
@@ -43,12 +42,16 @@ public class MovieFormDesign extends VerticalLayout {
         VerticalLayout vertContainer1 = new VerticalLayout();
         vertContainer1.setMargin(new MarginInfo(false, false, false, false));
         vertContainer1.setSizeFull();
-        vertContainer1.addComponentsAndExpand(title, country, director);
+        vertContainer1.addComponentsAndExpand(title, director);
         title.setSizeFull();
         country.setSizeFull();
         director.setSizeFull();
         inputBar.addComponent(vertContainer1);
         inputBar.setComponentAlignment(vertContainer1, Alignment.TOP_LEFT);
+
+        VerticalLayout vert2 = new VerticalLayout();
+        vert2.addComponents(country);
+        inputBar.setComponentAlignment(vert2, Alignment.TOP_LEFT);
 
         // Country, Folder, Page
         VerticalLayout vertContainer2 = new VerticalLayout();
@@ -72,12 +75,9 @@ public class MovieFormDesign extends VerticalLayout {
         buttonActorContainer.setComponentAlignment(addActorButton, Alignment.MIDDLE_CENTER);
         buttonActorContainer.setComponentAlignment(removeActorButton, Alignment.MIDDLE_CENTER);
         buttonActorContainer.setSizeFull();
-        vertContainer3.addComponents(actors, buttonActorContainer, runtime);
-        vertContainer3.setComponentAlignment(runtime, Alignment.BOTTOM_CENTER);
         actors.setSizeFull();
         addActorButton.setSizeFull();
         removeActorButton.setSizeFull();
-        runtime.setSizeFull();
         inputBar.addComponent(vertContainer3);
         inputBar.setComponentAlignment(vertContainer3, Alignment.TOP_RIGHT);
 

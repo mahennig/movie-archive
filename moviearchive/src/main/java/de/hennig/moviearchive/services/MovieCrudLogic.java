@@ -138,7 +138,7 @@ public class MovieCrudLogic implements Serializable {
         view.showForm();
     }
 
-    public void updateDirectors() {
+    public void updatePeople() {
         view.updateDirectorBox();
         view.updateActorsBox();
     }

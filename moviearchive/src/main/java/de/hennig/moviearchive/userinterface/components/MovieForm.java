@@ -10,13 +10,13 @@ import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 import java.util.Set;
 
 @SpringComponent
@@ -133,10 +133,6 @@ public class MovieForm extends MovieFormDesign {
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
-        binder.forField(runtime)
-                .withConverter(new StringToIntegerConverter("Value must be a integer"))
-                .withNullRepresentation(0)
-                .bind(Movie::getRunningTime, Movie::setRunningTime);
         binder.forField(folder)
                 .withConverter(new StringToIntegerConverter("Value must be a integer"))
                 .withNullRepresentation(0)
@@ -157,28 +153,21 @@ public class MovieForm extends MovieFormDesign {
 
     private void initDirectorBox() {
         director.setItemCaptionGenerator(Person::getName);
-        director.setNewItemHandler(inputString -> {
-
-            Person newPerson = new Person();
-            newPerson.setName(inputString);
-            viewLogic.newPerson(newPerson);
-
-            viewLogic.updateDirectors();
-            director.setSelectedItem(newPerson);
-        });
+        director.setNewItemProvider(inputString -> createNewPerson(inputString));
     }
 
     private void initActorBox() {
         actors.setItemCaptionGenerator(Person::getName);
-        actors.setNewItemHandler(inputString -> {
+        actors.setNewItemProvider(inputString -> createNewPerson(inputString));
+    }
 
-            Person newPerson = new Person();
-            newPerson.setName(inputString);
-            viewLogic.newPerson(newPerson);
-
-            viewLogic.updateDirectors();
-            actors.setSelectedItem(newPerson);
-        });
+    private Optional<Person> createNewPerson(String name) {
+        Person newPerson = new Person();
+        newPerson.setName(name);
+        viewLogic.newPerson(newPerson);
+        viewLogic.updatePeople();
+        actors.setSelectedItem(newPerson);
+        return Optional.of(newPerson);
     }
 
 
