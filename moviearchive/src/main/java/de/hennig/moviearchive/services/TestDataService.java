@@ -1,6 +1,5 @@
 package de.hennig.moviearchive.services;
 
-import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.domain.core.CountryData;
@@ -11,7 +10,6 @@ import de.hennig.moviearchive.repositories.PersonRepository;
 import de.hennig.moviearchive.util.RandomData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

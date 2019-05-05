@@ -1,7 +1,6 @@
 package de.hennig.moviearchive.services;
 
 import com.google.common.collect.Lists;
-import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.repositories.MovieRepository;
@@ -15,6 +14,7 @@ import de.hennig.moviearchive.domain.Movie;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -45,8 +45,8 @@ public class MovieService {
         movieRepository.delete(movie);
     }
 
-    public Movie getMovie(long movieId) {
-        return movieRepository.findOne(movieId);
+    public Optional<Movie> getMovie(long movieId) {
+        return movieRepository.findById(movieId);
     }
 
     public void removeActor(Movie movie, Person actor) {

@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 @SpringComponent
 public class MovieCrudLogic implements Serializable {
@@ -87,7 +88,8 @@ public class MovieCrudLogic implements Serializable {
     }
 
     private Movie findMovie(long movieId) {
-        return movieService.getMovie(movieId);
+        Optional<Movie> movie = movieService.getMovie(movieId);
+        return movie.orElse(null);
     }
 
     public void saveMovie(Movie movie) {

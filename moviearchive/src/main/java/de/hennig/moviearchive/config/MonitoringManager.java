@@ -12,7 +12,7 @@ package de.hennig.moviearchive.config;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,9 +26,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableScheduling
+@Slf4j
 public class MonitoringManager {
-
-	static Logger logger = Logger.getLogger(MonitoringManager.class);
 
 	@Autowired
 	Environment environment;
@@ -48,7 +47,7 @@ public class MonitoringManager {
 			remoteHostAddress = InetAddress.getLoopbackAddress().getHostAddress();
 			remoteHostName = InetAddress.getLoopbackAddress().getHostName();
 		} catch (UnknownHostException e) {
-			logger.error("Unable to fetch local server address.");
+			log.error("Unable to fetch local server address.");
 			remoteAddress = "";
 		}
 		port = environment.getProperty("local.server.port");
@@ -59,6 +58,6 @@ public class MonitoringManager {
 
 	@Scheduled(fixedDelay = 600000)
 	public void getTransactionPool() {
-		logger.info(printServerAndPort());
+		log.info(printServerAndPort());
 	}
 }
