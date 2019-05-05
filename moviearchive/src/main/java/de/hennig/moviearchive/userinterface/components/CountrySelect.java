@@ -1,29 +1,29 @@
 package de.hennig.moviearchive.userinterface.components;
 
 import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TwinColSelect;
+import de.hennig.moviearchive.domain.core.CountryData;
 import de.hennig.moviearchive.domain.core.GenreData;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class GenreSelect extends TwinColSelect<String> {
+public class CountrySelect extends TwinColSelect<String> {
 
-    public GenreSelect(String caption) {
+    public CountrySelect(String caption) {
         this.setCaption(caption);
         this.setHeight("60%");
         this.setItemCaptionGenerator((ItemCaptionGenerator<String>) item -> item);
-        initGenreBox();
+        initCountryBox();
     }
 
-    private void initGenreBox() {
-        this.setItems(loadGenres());
+    private void initCountryBox() {
+        this.setItems(loadCountries());
     }
 
-    private Set<String> loadGenres() {
+    private Set<String> loadCountries() {
         Set set = new HashSet();
-        for (GenreData data : GenreData.values()) {
+        for (CountryData data : CountryData.values()) {
             set.add(data.getName());
         }
         return set;

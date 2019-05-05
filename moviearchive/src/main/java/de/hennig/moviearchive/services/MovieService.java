@@ -2,6 +2,7 @@ package de.hennig.moviearchive.services;
 
 import com.google.common.collect.Lists;
 import com.vaadin.data.provider.QuerySortOrder;
+import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.repositories.MovieRepository;
 import org.slf4j.Logger;

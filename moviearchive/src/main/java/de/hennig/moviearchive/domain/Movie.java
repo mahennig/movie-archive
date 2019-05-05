@@ -7,7 +7,6 @@ import javax.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,8 +34,9 @@ public class Movie implements Serializable {
     @Column(name = "YEAR")
     private Integer year;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "COUNTRY")
-    private String country;
+    private Set<String> country = new HashSet<>();;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "GENRE")
@@ -56,10 +56,6 @@ public class Movie implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -98,11 +94,11 @@ public class Movie implements Serializable {
         this.year = year;
     }
 
-    public String getCountry() {
+    public Set<String> getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Set<String> country) {
         this.country = country;
     }
 
@@ -152,7 +148,7 @@ public class Movie implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", director=" + director +
-                ", cast=" + cast +
+                ", cast=" + cast.toString() +
                 ", year=" + year +
                 ", genres=" + genres.toString() +
                 ", description='" + description + '\'' +

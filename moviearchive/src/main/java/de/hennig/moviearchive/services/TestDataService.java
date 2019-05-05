@@ -39,7 +39,7 @@ public class TestDataService {
 
     Random r = new Random();
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         cleanRepositories();
         createMovies();
@@ -64,7 +64,7 @@ public class TestDataService {
             movie.setFolder(createRandomFolderAndPage(MIN_FOLDER, MAX_FOLDER));
             movie.setPage(createRandomFolderAndPage(MIN_PAGE, MAX_PAGE));
             movie.setYear(RandomData.year());
-            movie.setCountry(fetchRandomCountry());
+            movie.setCountry(fetchRandomCountries());
             movie.setGenres(fetchRandomGenres());
             movie.setDescription(createDescription());
             movies.add(movie);
@@ -94,9 +94,15 @@ public class TestDataService {
     private int createRandomFolderAndPage(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
-    private String fetchRandomCountry (){
-       int i  = r.nextInt(CountryData.values().length);
-        return CountryData.class.getEnumConstants()[i].getName();
+    private Set<String> fetchRandomCountries() {
+        HashSet<String> genreSet = new HashSet();
+
+        for (int i = 0; i < CountryData.values().length; i++) {
+            if (r.nextBoolean()) {
+                genreSet.add(CountryData.class.getEnumConstants()[i].getName());
+            }
+        }
+        return genreSet;
     }
 
     private Set<String> fetchRandomGenres() {
