@@ -36,7 +36,7 @@ public class Movie implements Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "COUNTRY")
-    private Set<String> country = new HashSet<>();;
+    private Set<String> country = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "GENRE")
@@ -53,6 +53,10 @@ public class Movie implements Serializable {
 
     @Column(name = "PAGE")
     private Integer page;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "TAG")
+    private Set<String> tags = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -142,19 +146,29 @@ public class Movie implements Serializable {
         this.page = page;
     }
 
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", director=" + director +
-                ", cast=" + cast.toString() +
+                ", cast=" + cast +
                 ", year=" + year +
-                ", genres=" + genres.toString() +
+                ", country=" + country +
+                ", genres=" + genres +
                 ", description='" + description + '\'' +
                 ", runningTime=" + runningTime +
                 ", folder=" + folder +
                 ", page=" + page +
+                ", tags=" + tags +
                 '}';
     }
 }

@@ -2,10 +2,11 @@ package de.hennig.moviearchive.services.dataprovider;
 
 import com.vaadin.data.provider.DataProvider;
 import de.hennig.moviearchive.domain.Movie;
+import de.hennig.moviearchive.domain.core.FilterAttributes;
 
 import java.util.stream.Stream;
 
-public interface MovieDataProvider extends DataProvider<Movie, String> {
+public interface MovieDataProvider extends DataProvider<Movie, FilterAttributes> {
 
     /**
      * Store given movie to the repository.

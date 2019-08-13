@@ -35,7 +35,6 @@ public class MovieArchiveUI extends UI {
 
     VerticalLayout layout = new VerticalLayout();
 
-    AboutView aboutView = new AboutView();
     VerticalLayout viewContainer = new VerticalLayout();
 
     @Override
@@ -45,8 +44,6 @@ public class MovieArchiveUI extends UI {
 
         buildMainView();
 
-        layout.addComponent(aboutView);
-        layout.setComponentAlignment(aboutView, Alignment.BOTTOM_CENTER);
         layout.setSizeFull();
         layout.setMargin(new MarginInfo(false, false, false, false));
         layout.setSpacing(false);

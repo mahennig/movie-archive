@@ -2,9 +2,12 @@ package de.hennig.moviearchive.services;
 
 import com.google.common.collect.Lists;
 import com.vaadin.data.provider.QuerySortOrder;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.repositories.MovieRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +23,8 @@ import java.util.Set;
 
 @Service
 @Transactional
+@Slf4j
 public class MovieService {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     MovieRepository movieRepository;
@@ -42,7 +44,7 @@ public class MovieService {
     }
 
     public void deleteMovie(Movie movie) {
-        logger.info(String.format("Delete Movie [%s]", movie));
+        log.info(String.format("Delete Movie [%s]", movie));
         movieRepository.delete(movie);
     }
 
@@ -55,14 +57,24 @@ public class MovieService {
         if (persons.contains(actor)) {
             persons.remove(actor);
             movie.setCast(persons);
-            logger.info(String.format("Remove Actor [%s] from Movie [%s]", actor, movie));
+            log.info(String.format("Remove Actor [%s] from Movie [%s]", actor, movie));
         } else {
-            logger.info(String.format("Actor [%s] not part of selected Movie", actor));
+            log.info(String.format("Actor [%s] not part of selected Movie", actor));
+            new Notification("Schauspieler '" + actor.getName() + "' aktuell nicht teil des Films.",
+                    Notification.Type.WARNING_MESSAGE).show(Page.getCurrent());
         }
     }
 
     public void addActor(Movie movie, Person actor) {
+        if (movie == null) {
+            log.error("No movie selected");
+            return;
+        }
         movie.addActor(actor);
-        logger.info(String.format("Add Actor [%s] to Movie[%s]", actor, movie));
+        log.info(String.format("Add Actor [%s] to Movie[%s]", actor, movie));
+    }
+
+    public Movie saveMovie(Movie movie) {
+        return movieRepository.save(movie);
     }
 }

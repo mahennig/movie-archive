@@ -12,7 +12,7 @@ public class GenreSelect extends TwinColSelect<String> {
 
     public GenreSelect(String caption) {
         this.setCaption(caption);
-        this.setHeight("60%");
+        this.setHeight(50, Unit.PIXELS);
         this.setItemCaptionGenerator((ItemCaptionGenerator<String>) item -> item);
         initGenreBox();
     }

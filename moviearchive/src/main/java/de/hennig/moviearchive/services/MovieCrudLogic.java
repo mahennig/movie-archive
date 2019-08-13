@@ -110,14 +110,15 @@ public class MovieCrudLogic implements Serializable {
 
     public void addActor(Movie movie, Person person) {
         movieService.addActor(movie, person);
-        view.updateMovie(movie);
-        view.refreshGrid(movie);
+        view.updateActorContainer(movie);
+        //view.refreshGrid(movie);
+
     }
 
     public void removeActor(Movie movie, Person person) {
         movieService.removeActor(movie, person);
-        view.updateMovie(movie);
-        view.refreshGrid(movie);
+        //view.updateMovie(movie);
+        //view.refreshGrid(movie);
     }
 
     public void editMovie(Movie movie) {

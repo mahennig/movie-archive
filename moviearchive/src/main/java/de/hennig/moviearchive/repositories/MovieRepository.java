@@ -14,6 +14,5 @@ public interface MovieRepository extends CrudRepository<Movie, Long> {
     List<Movie> findDistinctByTitleContainingIgnoreCaseOrDirector(
             String title, Collection<Person> director);
 
-
 }
 

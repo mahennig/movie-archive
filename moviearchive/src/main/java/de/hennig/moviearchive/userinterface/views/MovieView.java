@@ -6,14 +6,9 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Movie;
+import de.hennig.moviearchive.domain.core.FilterAttributes;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 import de.hennig.moviearchive.services.PersonService;
 import de.hennig.moviearchive.services.dataprovider.MovieDataProvider;
@@ -47,13 +42,16 @@ public class MovieView extends VerticalLayout implements View {
     @Autowired
     private MovieCrudLogic.MovieCrudLogicFactory logicFactory;
 
-    private ConfigurableFilterDataProvider<Movie, Void, String> filterDataProvider;
-    private TextField filter;
+    private ConfigurableFilterDataProvider<Movie, Void, FilterAttributes> filterDataProvider;
+    private TextField searchFilter;
+    private ComboBox<String> startingLetterFilter;
 
     private final HorizontalLayout gridContainer = new HorizontalLayout();
 
     Label header;
     Button newMovie;
+
+    FilterAttributes filter = new FilterAttributes();
 
     private MovieCrudLogic viewLogic;
 
@@ -64,12 +62,20 @@ public class MovieView extends VerticalLayout implements View {
         newMovie = new Button("Neuen Film hinzufügen");
         header = new Label("Filmdatenbank");
         header.addStyleName("h2");
-        filter = new TextField();
-        filter.setPlaceholder("Suche ...");
-        filter.addValueChangeListener(event -> filterDataProvider.setFilter(event.getValue()));
+        searchFilter = new TextField();
+        searchFilter.setPlaceholder("Suche ...");
+        searchFilter.addValueChangeListener(event -> filterDataProvider.setFilter(filter.setSearchText(event.getValue())));
+
+        startingLetterFilter = new ComboBox<>();
+        startingLetterFilter.setItems("#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+        startingLetterFilter.addValueChangeListener(valueChangeEvent ->
+
+                filterDataProvider.setFilter(filter.setCapital(valueChangeEvent.getValue())));
 
         topLayout.addComponentsAndExpand(header);
-        topLayout.addComponent(filter);
+        topLayout.addComponent(startingLetterFilter);
+        topLayout.addComponent(searchFilter);
         topLayout.addComponent(newMovie);
         newMovie.addClickListener(e -> viewLogic.newMovie());
         topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
@@ -86,6 +92,10 @@ public class MovieView extends VerticalLayout implements View {
         updateActorsBox();
         panel.setContent(form);
         return panel;
+    }
+
+    public void updateActorContainer(Movie movie){
+        form.setActors(movie.getCast());
     }
 
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -179,11 +189,11 @@ public class MovieView extends VerticalLayout implements View {
                 .getBean(PersonService.class);
     }
 
-    public void hideForm(){
+    public void hideForm() {
         form.setVisible(false);
     }
 
-    public void showForm(){
+    public void showForm() {
         form.setVisible(true);
     }
 

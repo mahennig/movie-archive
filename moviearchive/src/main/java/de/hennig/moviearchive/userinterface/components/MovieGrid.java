@@ -32,47 +32,18 @@ public class MovieGrid extends Grid<Movie> {
         addColumn(Movie::getDirector).setCaption("Regisseur").setWidth(200);
         addColumn(Movie::getYear).setCaption("Jahr").setWidth(100);
         addColumn(Movie::getCountry).setCaption("Land").setWidth(100);
-         addColumn(Movie::getCast).setCaption("Schauspieler").setWidth(400);
+        addColumn(Movie::getCast).setCaption("Schauspieler").setWidth(400);
         addColumn(Movie::getGenres).setCaption("Genre's").setWidth(300);
-        addColumn(Movie::getFolder).setCaption("Ordner").setWidth(70);
-        addColumn(Movie::getPage).setCaption("Seite").setWidth(70);
+        addColumn(Movie::getFolder).setCaption("Ordner").setWidth(120);
+        addColumn(Movie::getPage).setCaption("Seite").setWidth(120);
         addColumn(Movie::getRunningTime).setCaption("Laufzeit").setWidth(100);
 
         sort(nameCol, SortDirection.DESCENDING);
     }
 
-    private ThemeResource loadCountryFlag(String country) {
-        String countryCode = "";
-        switch (country) {
-            case "Deutschland":
-                countryCode = "germany";
-                break;
-            case "China":
-                countryCode = "china";
-                break;
-            case "Frankreich":
-                countryCode = "france";
-                break;
-            case "USA":
-                countryCode = "usa";
-                break;
-            case "Italien":
-                countryCode = "italy";
-                break;
-            case "Vereiniges Königreich":
-                countryCode = "united-kingdom";
-                break;
-            default:
-                countryCode = "bulgaria";
-                break;
-        }
-        return new ThemeResource("pictures/flag-" + countryCode + ".png");
-    }
-
     public void refresh(Movie movie) {
         getDataCommunicator().refresh(movie);
     }
-
 
     public Movie getSelectedRow() {
         Movie movie = asSingleSelect().getValue();

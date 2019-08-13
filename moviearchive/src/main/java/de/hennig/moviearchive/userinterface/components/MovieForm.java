@@ -3,9 +3,11 @@ package de.hennig.moviearchive.userinterface.components;
 import com.vaadin.data.Binder;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.server.Page;
+
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.services.MovieCrudLogic;
@@ -46,7 +48,8 @@ public class MovieForm extends MovieFormDesign {
     }
 
     public void setActors(Set<Person> persons) {
-        actors.setItems(persons);
+        ComboBox<Person> actorBox = actorSelect.getActorBox();
+        actorBox.setItems(persons);
     }
 
     public void setDirectors(Set<Person> persons) {
@@ -64,14 +67,15 @@ public class MovieForm extends MovieFormDesign {
         if (currentMovie == null) {
             sendNoMovieSelectedNotication();
         }
-        viewLogic.addActor(currentMovie, actors.getValue());
+        ComboBox<Person> actorBox = actorSelect.getActorBox();
+        viewLogic.addActor(currentMovie, actorBox.getValue());
     }
 
     private void onRemoveActor() {
         if (currentMovie == null) {
             sendNoMovieSelectedNotication();
         }
-        viewLogic.removeActor(currentMovie, actors.getValue());
+        viewLogic.removeActor(currentMovie, actorSelect.getValue());
     }
 
     private void sendNoMovieSelectedNotication() {
@@ -129,25 +133,28 @@ public class MovieForm extends MovieFormDesign {
         initActorBox();
         binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
-        binder.forField(year).bind(Movie::getYear, Movie::setYear);
+        binder.forField(year)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getYear, Movie::setYear);
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
         binder.forField(folder)
-                .withConverter(new StringToIntegerConverter("Value must be a integer"))
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
                 .withNullRepresentation(0)
                 .bind(Movie::getFolder, Movie::setFolder);
         binder.forField(page)
-                .withConverter(new StringToIntegerConverter("Value must be a integer"))
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
                 .withNullRepresentation(0)
                 .bind(Movie::getPage, Movie::setPage);
+        binder.forField(actorSelect.getActorContainer()).bind(Movie::getCast, Movie::setCast);
 
         saveButton.addClickListener(event -> onSave());
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
         deleteButton.addClickListener(event -> onDelete());
         discardButton.addClickListener(event -> setUpData());
-        addActorButton.addClickListener(event -> onAddActor());
-        removeActorButton.addClickListener(event -> onRemoveActor());
+        actorSelect.getActorAddBtn().addClickListener(event -> onAddActor());
         binder.addStatusChangeListener(this::updateButtons);
     }
 
@@ -157,16 +164,15 @@ public class MovieForm extends MovieFormDesign {
     }
 
     private void initActorBox() {
-        actors.setItemCaptionGenerator(Person::getName);
-        actors.setNewItemProvider(inputString -> createNewPerson(inputString));
+        ComboBox<Person> actorBox = actorSelect.getActorBox();
+        actorBox.setNewItemProvider(inputString -> createNewPerson(inputString));
     }
 
-    private Optional<Person> createNewPerson(String name) {
+    public Optional<Person> createNewPerson(String name) {
         Person newPerson = new Person();
         newPerson.setName(name);
         viewLogic.newPerson(newPerson);
         viewLogic.updatePeople();
-        actors.setSelectedItem(newPerson);
         return Optional.of(newPerson);
     }
 
