@@ -1,6 +1,9 @@
 
 package de.hennig.moviearchive.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
+@ToString
 public class Movie implements Serializable {
 
     @Id
@@ -23,24 +28,20 @@ public class Movie implements Serializable {
     @Column(name = "TITLE", unique = true)
     private String title;
 
-    @OneToOne(targetEntity = Person.class)
-    private Person director;
+    @Column(name = "DIRECTORS")
+    private String directors;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "MOVIE_AND_ACTOR", joinColumns = {@JoinColumn(name = "MOVIE_ID")}, inverseJoinColumns = {
-            @JoinColumn(name = "PERSON_ID")})
-    private Set<Person> cast = new HashSet<>();
+    @Column(name = "CAST")
+    private String cast;
 
     @Column(name = "YEAR")
     private Integer year;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "COUNTRY")
-    private Set<String> country = new HashSet<>();
+    private String country;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "GENRE")
-    private Set<String> genres = new HashSet<>();
+    private String genres;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -54,121 +55,7 @@ public class Movie implements Serializable {
     @Column(name = "PAGE")
     private Integer page;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "TAG")
-    private Set<String> tags = new HashSet<>();
+    private String tags;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Person getDirector() {
-        return director;
-    }
-
-    public void setDirector(Person director) {
-        this.director = director;
-    }
-
-    public Set<Person> getCast() {
-        return cast;
-    }
-
-    public void setCast(Set<Person> cast) {
-        this.cast = cast;
-    }
-
-    public void addActor(Person actor) {
-        cast.add(actor);
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Set<String> getCountry() {
-        return country;
-    }
-
-    public void setCountry(Set<String> country) {
-        this.country = country;
-    }
-
-    public Set<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<String> genres) {
-        this.genres = genres;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getRunningTime() {
-        return runningTime;
-    }
-
-    public void setRunningTime(Integer runningTime) {
-        this.runningTime = runningTime;
-    }
-
-    public Integer getFolder() {
-        return folder;
-    }
-
-    public void setFolder(Integer folder) {
-        this.folder = folder;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", director=" + director +
-                ", cast=" + cast +
-                ", year=" + year +
-                ", country=" + country +
-                ", genres=" + genres +
-                ", description='" + description + '\'' +
-                ", runningTime=" + runningTime +
-                ", folder=" + folder +
-                ", page=" + page +
-                ", tags=" + tags +
-                '}';
-    }
 }

@@ -10,7 +10,6 @@ import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.core.FilterAttributes;
 import de.hennig.moviearchive.services.MovieCrudLogic;
-import de.hennig.moviearchive.services.PersonService;
 import de.hennig.moviearchive.services.dataprovider.MovieDataProvider;
 import de.hennig.moviearchive.userinterface.components.MovieForm;
 import de.hennig.moviearchive.userinterface.components.MovieGrid;
@@ -36,8 +35,6 @@ public class MovieView extends VerticalLayout implements View {
     @Autowired
     private MovieDataProvider dataProvider;
 
-    @Autowired
-    private PersonService personService;
 
     @Autowired
     private MovieCrudLogic.MovieCrudLogicFactory logicFactory;
@@ -88,14 +85,8 @@ public class MovieView extends VerticalLayout implements View {
         Panel panel = new Panel();
         panel.setCaption("Film Details");
         form = formFactory.createForm(viewLogic);
-        updateDirectorBox();
-        updateActorsBox();
         panel.setContent(form);
         return panel;
-    }
-
-    public void updateActorContainer(Movie movie){
-        form.setActors(movie.getCast());
     }
 
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -134,14 +125,6 @@ public class MovieView extends VerticalLayout implements View {
 
     public void removeMovie(Movie movie) {
         dataProvider.delete(movie);
-    }
-
-    public void updateDirectorBox() {
-        form.setDirectors(personService.getAllPerson());
-    }
-
-    public void updateActorsBox() {
-        form.setActors(personService.getAllPerson());
     }
 
     @PostConstruct
@@ -184,9 +167,7 @@ public class MovieView extends VerticalLayout implements View {
         this.formFactory = WebApplicationContextUtils
                 .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
                 .getBean(MovieForm.MovieFormFactory.class);
-        this.personService = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
-                .getBean(PersonService.class);
+
     }
 
     public void hideForm() {

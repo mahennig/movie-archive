@@ -3,9 +3,7 @@ package de.hennig.moviearchive.services;
 
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.userinterface.MovieArchiveUI;
 import de.hennig.moviearchive.userinterface.views.MovieView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,6 @@ public class MovieCrudLogic implements Serializable {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private PersonService personService;
 
     private MovieCrudLogic() {
     }
@@ -108,19 +104,6 @@ public class MovieCrudLogic implements Serializable {
         setFragmentParameter("");
     }
 
-    public void addActor(Movie movie, Person person) {
-        movieService.addActor(movie, person);
-        view.updateActorContainer(movie);
-        //view.refreshGrid(movie);
-
-    }
-
-    public void removeActor(Movie movie, Person person) {
-        movieService.removeActor(movie, person);
-        //view.updateMovie(movie);
-        //view.refreshGrid(movie);
-    }
-
     public void editMovie(Movie movie) {
         if (movie == null) {
             setFragmentParameter("");
@@ -130,9 +113,6 @@ public class MovieCrudLogic implements Serializable {
         view.editMovie(movie);
     }
 
-    public void newPerson(Person person) {
-        personService.updatePerson(person);
-    }
 
     public void newMovie() {
         view.clearSelection();
@@ -141,10 +121,6 @@ public class MovieCrudLogic implements Serializable {
         view.showForm();
     }
 
-    public void updatePeople() {
-        view.updateDirectorBox();
-        view.updateActorsBox();
-    }
 
     public void rowSelected(Movie movie) {
         view.editMovie(movie);

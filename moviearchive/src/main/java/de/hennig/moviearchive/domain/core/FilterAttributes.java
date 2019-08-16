@@ -9,6 +9,10 @@ public class FilterAttributes {
 
     String capital;
 
+    String tag;
+
+    String genre;
+
     public boolean isSearchTextEmpty(){
         return searchText == null || searchText.isEmpty();
     }

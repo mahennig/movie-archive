@@ -1,32 +1,15 @@
 package de.hennig.moviearchive.services.dataprovider;
 
 import com.vaadin.data.provider.AbstractBackEndDataProvider;
-import com.vaadin.data.provider.DataProviderListener;
 import com.vaadin.data.provider.Query;
-import com.vaadin.sass.internal.util.StringUtil;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.Registration;
-import de.hennig.moviearchive.domain.Genre;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.domain.core.FilterAttributes;
 import de.hennig.moviearchive.repositories.MovieRepository;
-import de.hennig.moviearchive.repositories.PersonRepository;
-import de.hennig.moviearchive.services.MovieCrudLogic;
-import de.hennig.moviearchive.services.MovieService;
-import de.hennig.moviearchive.services.PersonService;
-import de.hennig.moviearchive.userinterface.components.MovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -36,8 +19,6 @@ public class MovieDataProviderImpl extends AbstractBackEndDataProvider<Movie, Fi
     @Autowired
     private MovieRepository movieRepository;
 
-    @Autowired
-    private PersonRepository personRepository;
 
     @Transactional
     @Override
@@ -91,21 +72,18 @@ public class MovieDataProviderImpl extends AbstractBackEndDataProvider<Movie, Fi
         } else {
             if (filterText.getCapital() != null && !filterText.getCapital().isEmpty()) {
                 if (filterText.getCapital().equals("#")) {
-                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirector(filterText.getSearchText(), getFilteredDirectors(filterText.getSearchText())).stream().
+                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream().
                             filter(m -> Character.isDigit(m.getTitle().charAt(0)));
                 } else {
-                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirector(filterText.getSearchText(), getFilteredDirectors(filterText.getSearchText())).stream().
+                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream().
                             filter(m -> m.getTitle().toLowerCase().startsWith(filterText.getCapital().toLowerCase()));
                 }
             } else {
-                return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirector(filterText.getSearchText(), getFilteredDirectors(filterText.getSearchText())).stream();
+                return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream();
             }
 
         }
     }
 
-    private Collection<Person> getFilteredDirectors(String string) {
-        return personRepository.findAllByNameContainingIgnoreCase(string);
-    }
 
 }

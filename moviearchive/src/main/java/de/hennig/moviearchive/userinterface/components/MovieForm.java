@@ -3,13 +3,11 @@ package de.hennig.moviearchive.userinterface.components;
 import com.vaadin.data.Binder;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.converter.StringToIntegerConverter;
-import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.server.Page;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.domain.Person;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
-import java.util.Set;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -47,35 +43,11 @@ public class MovieForm extends MovieFormDesign {
         this.setVisible(false);
     }
 
-    public void setActors(Set<Person> persons) {
-        ComboBox<Person> actorBox = actorSelect.getActorBox();
-        actorBox.setItems(persons);
-    }
-
-    public void setDirectors(Set<Person> persons) {
-        director.setItems(persons);
-    }
-
     private void onSave() {
         if (binder.writeBeanIfValid(currentMovie)) {
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
         }
-    }
-
-    private void onAddActor() {
-        if (currentMovie == null) {
-            sendNoMovieSelectedNotication();
-        }
-        ComboBox<Person> actorBox = actorSelect.getActorBox();
-        viewLogic.addActor(currentMovie, actorBox.getValue());
-    }
-
-    private void onRemoveActor() {
-        if (currentMovie == null) {
-            sendNoMovieSelectedNotication();
-        }
-        viewLogic.removeActor(currentMovie, actorSelect.getValue());
     }
 
     private void sendNoMovieSelectedNotication() {
@@ -123,22 +95,23 @@ public class MovieForm extends MovieFormDesign {
         discardButton.setEnabled(changes);
     }
 
-
     /*
         Binding all fields with current Movie Bean
      */
     @PostConstruct
     private void init() {
-        initDirectorBox();
-        initActorBox();
         binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
         binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
         binder.forField(year)
                 .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
                 .withNullRepresentation(0)
                 .bind(Movie::getYear, Movie::setYear);
+        binder.forField(runtime)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getRunningTime, Movie::setRunningTime);
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
-        binder.forField(director).bind(Movie::getDirector, Movie::setDirector);
+        binder.forField(directors).bind(Movie::getDirectors, Movie::setDirectors);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
         binder.forField(folder)
                 .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
@@ -148,33 +121,14 @@ public class MovieForm extends MovieFormDesign {
                 .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
                 .withNullRepresentation(0)
                 .bind(Movie::getPage, Movie::setPage);
-        binder.forField(actorSelect.getActorContainer()).bind(Movie::getCast, Movie::setCast);
+        binder.forField(actors).bind(Movie::getCast, Movie::setCast);
+        binder.forField(tags).bind(Movie::getTags, Movie::setTags);
 
         saveButton.addClickListener(event -> onSave());
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
         deleteButton.addClickListener(event -> onDelete());
         discardButton.addClickListener(event -> setUpData());
-        actorSelect.getActorAddBtn().addClickListener(event -> onAddActor());
         binder.addStatusChangeListener(this::updateButtons);
     }
-
-    private void initDirectorBox() {
-        director.setItemCaptionGenerator(Person::getName);
-        director.setNewItemProvider(inputString -> createNewPerson(inputString));
-    }
-
-    private void initActorBox() {
-        ComboBox<Person> actorBox = actorSelect.getActorBox();
-        actorBox.setNewItemProvider(inputString -> createNewPerson(inputString));
-    }
-
-    public Optional<Person> createNewPerson(String name) {
-        Person newPerson = new Person();
-        newPerson.setName(name);
-        viewLogic.newPerson(newPerson);
-        viewLogic.updatePeople();
-        return Optional.of(newPerson);
-    }
-
 
 }
