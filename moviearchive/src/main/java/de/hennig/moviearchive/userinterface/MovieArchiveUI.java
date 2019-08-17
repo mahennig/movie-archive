@@ -16,6 +16,8 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.v7.ui.themes.BaseTheme;
 import de.hennig.moviearchive.userinterface.views.ErrorView;
 import de.hennig.moviearchive.userinterface.views.LoginView;
 import de.hennig.moviearchive.userinterface.views.MovieView;
@@ -44,32 +46,38 @@ public class MovieArchiveUI extends UI {
     @Override
     public void init(VaadinRequest request) {
         buildBasicLayout();
+        buildNavigator();
         buildViewContainer();
     }
 
     private void buildBasicLayout() {
         Responsive.makeResponsive(this);
-        Label header = new Label(" Filmdatenbank");
-        header.addStyleName("h2");
+        Label header = new Label("Filmdatenbank");
+        header.addStyleName(ValoTheme.LABEL_H1);
+        header.addStyleName("margin-left:auto");
         setContent(layout);
         layout.addComponent(header);
+        layout.setComponentAlignment(header, Alignment.TOP_LEFT);
         layout.setSizeFull();
-        layout.setMargin(new MarginInfo(false, false, false, false));
         layout.setSpacing(false);
+        layout.setMargin(false);
     }
 
-    private void buildViewContainer() {
+    private void buildNavigator() {
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addProvider(provider);
         navigator.setErrorView(ErrorView.class);
         navigator.addView(MovieView.ROUTE, MovieView.class);
         navigator.addView(LoginView.ROUTE, LoginView.class);
 
-
-        layout.addComponentsAndExpand(viewContainer);
-        viewContainer.setMargin(new MarginInfo(false, false, false, false));
-        layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
         navigator.navigateTo(LoginView.ROUTE);
+    }
+
+    private void buildViewContainer() {
+        layout.addComponentsAndExpand(viewContainer);
+        layout.setSpacing(false);
+        viewContainer.setMargin(false);
+        layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
     }
 
     public static MovieArchiveUI get() {
@@ -78,7 +86,7 @@ public class MovieArchiveUI extends UI {
 
     @WebServlet(value = "/*", name = "MovieArchiveServlet", asyncSupported = true, initParams = {
             @WebInitParam(name = "heartbeatInterval", value = "30")})
-    @VaadinServletConfiguration(ui = MovieArchiveUI.class, productionMode = false)
+    @VaadinServletConfiguration(ui = MovieArchiveUI.class, productionMode = true)
     public static class Servlet extends SpringVaadinServlet {
     }
 

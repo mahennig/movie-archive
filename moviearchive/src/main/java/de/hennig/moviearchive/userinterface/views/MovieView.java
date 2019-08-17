@@ -9,6 +9,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.domain.core.FilterAttributes;
 import de.hennig.moviearchive.services.MovieCrudLogic;
@@ -73,7 +74,7 @@ public class MovieView extends VerticalLayout implements View {
         barAndGridLayout.setComponentAlignment(topLayout, Alignment.TOP_RIGHT);
         barAndGridLayout.addComponentsAndExpand(grid);
         barAndGridLayout.setMargin(new MarginInfo(false, false, true, false));
-        barAndGridLayout.setSpacing(false);
+        barAndGridLayout.setSpacing(true);
 
         addComponentsAndExpand(barAndGridLayout);
 
@@ -88,6 +89,7 @@ public class MovieView extends VerticalLayout implements View {
         HorizontalLayout topLayout = new HorizontalLayout();
 
         newMovie = new Button("Neuen Film hinzufügen");
+        newMovie.setStyleName(ValoTheme.BUTTON_PRIMARY);
         randomMovie = new Button(VaadinIcons.LIGHTBULB);
 
         searchFilter = new TextField();
@@ -110,7 +112,7 @@ public class MovieView extends VerticalLayout implements View {
         newMovie.addClickListener(e -> viewLogic.newMovie());
         randomMovie.addClickListener(e -> viewLogic.randomMovieProposal());
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
-        topLayout.setMargin(new MarginInfo(false, true, false, true));
+        topLayout.setMargin(new MarginInfo(false, false, false, true));
         return topLayout;
     }
 
