@@ -2,6 +2,7 @@
 package de.hennig.moviearchive.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -15,7 +16,12 @@ import java.util.Set;
 @Entity
 @Data
 @ToString
+@NoArgsConstructor
 public class Movie implements Serializable {
+
+    public Movie(String title) {
+        this.title = title;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

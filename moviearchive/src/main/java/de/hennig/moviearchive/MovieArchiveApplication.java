@@ -13,15 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ServletComponentScan("de.hennig.moviearchive.userinterface")
 @EnableJpaRepositories
-@Configuration
-@Slf4j
 public class MovieArchiveApplication extends SpringBootServletInitializer {
 
-    @Autowired
-    MovieService movieService;
-
     public static void main(String[] args) {
-        log.info("Starting movie archive application ...");
         SpringApplication.run(MovieArchiveApplication.class, args);
     }
 }

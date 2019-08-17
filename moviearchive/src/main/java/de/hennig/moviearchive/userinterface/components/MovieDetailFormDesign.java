@@ -5,7 +5,9 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
-public class MovieFormDesign extends VerticalLayout {
+import javax.swing.*;
+
+public class MovieDetailFormDesign extends VerticalLayout {
 
     HorizontalLayout inputBar = new HorizontalLayout();
 
@@ -22,10 +24,10 @@ public class MovieFormDesign extends VerticalLayout {
 
     protected TextArea description = new TextArea("Handlung");
     protected TextField tags = new TextField("Schlagwörter");
+    protected Button trailer = new Button("Trailer", VaadinIcons.YOUTUBE);
 
     protected Image image = new Image("Bild");
     protected PopupView popup;
-
 
     protected Button saveButton = new Button("Speichern", VaadinIcons.SAFE);
     protected Button discardButton = new Button("Verwerfen", VaadinIcons.CROSS_CUTLERY);
@@ -33,7 +35,7 @@ public class MovieFormDesign extends VerticalLayout {
     protected Button cancelButton = new Button("Abbrechen", VaadinIcons.FILE_REMOVE);
 
 
-    public MovieFormDesign() {
+    public MovieDetailFormDesign() {
 
         super.setSizeFull();
 
@@ -76,12 +78,14 @@ public class MovieFormDesign extends VerticalLayout {
         rightContainer.setSizeFull();
         description.setSizeFull();
         tags.setSizeFull();
-        rightContainer.addComponents(description, tags);
+        trailer.setSizeFull();
+        rightContainer.addComponents(description, tags, trailer);
+        rightContainer.setComponentAlignment(trailer, Alignment.BOTTOM_CENTER);
         inputBar.addComponents(rightContainer);
         inputBar.setComponentAlignment(rightContainer, Alignment.TOP_RIGHT);
 
         // Image
-        //initImage();
+        initImage();
 
         // Buttons
         HorizontalLayout buttonBar = new HorizontalLayout();
@@ -91,13 +95,12 @@ public class MovieFormDesign extends VerticalLayout {
 
     private void initImage() {
         image.setSource(new ExternalResource("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWiZVjBlrvZ9h01TB6m-nrcbjOnMcsoqqT0qWxFcbWjThUsGFr"));
-        inputBar.addComponent(image);
+        inputBar.addComponents(image);
         inputBar.setComponentAlignment(image, Alignment.TOP_RIGHT);
+
         VerticalLayout popupContent = new VerticalLayout();
         popupContent.addComponent(new TextField("Textfield"));
         popupContent.addComponent(new Button("Button"));
 
-// The component itself
-        popup = new PopupView(null, new TextField());
     }
 }

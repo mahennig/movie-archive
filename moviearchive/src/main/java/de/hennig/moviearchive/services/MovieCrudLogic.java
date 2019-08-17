@@ -3,6 +3,7 @@ package de.hennig.moviearchive.services;
 
 import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.userinterface.MovieArchiveUI;
 import de.hennig.moviearchive.userinterface.views.MovieView;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -64,7 +66,7 @@ public class MovieCrudLogic implements Serializable {
 
         Page page = MovieArchiveUI.get().getPage();
         page.setUriFragment(
-                "!" + MovieView.VIEW_NAME + "/" + fragmentParameter,
+                "!" + MovieView.ROUTE + "/" + fragmentParameter,
                 false);
 
     }
@@ -122,12 +124,18 @@ public class MovieCrudLogic implements Serializable {
     }
 
 
+    public void randomMovieProposal() {
+        Movie randomMovie = movieService.getRandomMovie();
+        Notification.show(randomMovie.getTitle() + " mit " + randomMovie.getCast());
+    }
+
+
     public void rowSelected(Movie movie) {
         view.editMovie(movie);
         view.showForm();
     }
 
-    public void hideSelectView(){
+    public void hideSelectView() {
         view.hideForm();
     }
 

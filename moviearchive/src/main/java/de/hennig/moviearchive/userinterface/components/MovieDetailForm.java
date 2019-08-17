@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MovieForm extends MovieFormDesign {
+public class MovieDetailForm extends MovieDetailFormDesign {
 
     MovieCrudLogic viewLogic;
     private Binder<Movie> binder = new Binder<>(Movie.class);
@@ -32,14 +32,18 @@ public class MovieForm extends MovieFormDesign {
         @Autowired
         private ApplicationContext context;
 
-        public MovieForm createForm(MovieCrudLogic logic) {
-            MovieForm form = context.getBean(MovieForm.class);
+        public MovieDetailForm createForm(MovieCrudLogic logic) {
+            MovieDetailForm form = context.getBean(MovieDetailForm.class);
             form.init(logic);
             return form;
         }
     }
 
-    private MovieForm() {
+    private void init(MovieCrudLogic logic) {
+        viewLogic = logic;
+    }
+
+    private MovieDetailForm() {
         this.setVisible(false);
     }
 
@@ -48,11 +52,6 @@ public class MovieForm extends MovieFormDesign {
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
         }
-    }
-
-    private void sendNoMovieSelectedNotication() {
-        new Notification("Warnung", "Es wurde kein Film ausgewählt!", Notification.Type.WARNING_MESSAGE, true)
-                .show(Page.getCurrent());
     }
 
     public void editMovie(Movie movie) {
@@ -75,8 +74,9 @@ public class MovieForm extends MovieFormDesign {
         }
     }
 
-    private void init(MovieCrudLogic logic) {
-        viewLogic = logic;
+    private void sendNoMovieSelectedNotication() {
+        new Notification("Warnung", "Es wurde kein Film ausgewählt!", Notification.Type.WARNING_MESSAGE, true)
+                .show(Page.getCurrent());
     }
 
     private void setUpData() {
@@ -128,7 +128,15 @@ public class MovieForm extends MovieFormDesign {
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
         deleteButton.addClickListener(event -> onDelete());
         discardButton.addClickListener(event -> setUpData());
+        initTrailerButton();
         binder.addStatusChangeListener(this::updateButtons);
+    }
+
+    private void initTrailerButton() {
+        trailer.addClickListener(e -> {
+            if (currentMovie.getTitle() != null && !currentMovie.getTitle().isEmpty())
+                getUI().getPage().open("https://www.youtube.com/results?search_query=" + currentMovie.getTitle(), "_blank");
+        });
     }
 
 }

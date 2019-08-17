@@ -13,11 +13,13 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import de.hennig.moviearchive.userinterface.views.ErrorView;
+import de.hennig.moviearchive.userinterface.views.LoginView;
 import de.hennig.moviearchive.userinterface.views.MovieView;
-import de.hennig.moviearchive.userinterface.views.AboutView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,37 +30,46 @@ import javax.servlet.annotation.WebServlet;
 @Title("Film Datenbank")
 @Theme("valo")
 @SpringUI
+@Slf4j
 public class MovieArchiveUI extends UI {
 
     @Autowired
-    private SpringViewProvider viewProvider;
+    SpringViewProvider provider;
 
     VerticalLayout layout = new VerticalLayout();
 
     VerticalLayout viewContainer = new VerticalLayout();
 
+
     @Override
     public void init(VaadinRequest request) {
-        setContent(layout);
+        buildBasicLayout();
+        buildViewContainer();
+    }
+
+    private void buildBasicLayout() {
         Responsive.makeResponsive(this);
-
-        buildMainView();
-
+        Label header = new Label(" Filmdatenbank");
+        header.addStyleName("h2");
+        setContent(layout);
+        layout.addComponent(header);
         layout.setSizeFull();
         layout.setMargin(new MarginInfo(false, false, false, false));
         layout.setSpacing(false);
     }
 
-    private void buildMainView() {
+    private void buildViewContainer() {
         Navigator navigator = new Navigator(this, viewContainer);
-        navigator.addProvider(viewProvider);
+        navigator.addProvider(provider);
         navigator.setErrorView(ErrorView.class);
+        navigator.addView(MovieView.ROUTE, MovieView.class);
+        navigator.addView(LoginView.ROUTE, LoginView.class);
+
 
         layout.addComponentsAndExpand(viewContainer);
         viewContainer.setMargin(new MarginInfo(false, false, false, false));
         layout.setComponentAlignment(viewContainer, Alignment.TOP_CENTER);
-        navigator.navigateTo(MovieView.VIEW_NAME);
-
+        navigator.navigateTo(LoginView.ROUTE);
     }
 
     public static MovieArchiveUI get() {
@@ -80,11 +91,13 @@ public class MovieArchiveUI extends UI {
 
         @Override
         public boolean beforeViewChange(ViewChangeListener.ViewChangeEvent event) {
+            log.info(event.getParameters());
             return true;
         }
 
         @Override
         public void afterViewChange(ViewChangeEvent event) {
+            log.info(event.getParameters());
         }
 
     }
