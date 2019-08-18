@@ -1,10 +1,8 @@
 package de.hennig.moviearchive.userinterface.views;
 
 import com.vaadin.data.provider.ConfigurableFilterDataProvider;
-import com.vaadin.flow.router.Route;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
@@ -24,7 +22,7 @@ import javax.annotation.PostConstruct;
 @SpringView(name = MovieView.ROUTE)
 public class MovieView extends VerticalLayout implements View {
 
-    public static final String ROUTE  = "movie";
+    public static final String ROUTE = "movie";
 
     @Autowired
     private MovieDetailForm.MovieFormFactory formFactory;
@@ -38,19 +36,18 @@ public class MovieView extends VerticalLayout implements View {
             .getBean(MovieCrudLogic.MovieCrudLogicFactory.class);
 
     private ConfigurableFilterDataProvider<Movie, Void, FilterAttributes> filterDataProvider;
-    private final HorizontalLayout gridContainer = new HorizontalLayout();
-
-    MovieDetailForm form;
-    Button newMovie;
-    Button randomMovie;
 
     FilterAttributes filter = new FilterAttributes();
     private TextField searchFilter;
     private ComboBox<String> startingLetterFilter;
     private TextField genreFilter;
+    private Button newMovie;
+    private Button randomMovie;
 
     private MovieGrid grid;
-    Panel detailPanel;
+
+    private Panel detailPanel;
+    private MovieDetailForm form;
 
     private MovieCrudLogic viewLogic;
 
@@ -60,13 +57,7 @@ public class MovieView extends VerticalLayout implements View {
         setSizeFull();
 
         HorizontalLayout topLayout = createTopBar();
-
-        grid = new MovieGrid();
-        grid.setSizeFull();
-        grid.asSingleSelect().addValueChangeListener(
-                event -> viewLogic.rowSelected(grid.getSelectedRow()));
-        filterDataProvider = dataProvider.withConfigurableFilter();
-        grid.setDataProvider(filterDataProvider);
+        createMovieGrid();
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
 
@@ -83,6 +74,21 @@ public class MovieView extends VerticalLayout implements View {
         setComponentAlignment(detailPanel, Alignment.BOTTOM_CENTER);
 
         viewLogic.init();
+    }
+
+    private void createMovieGrid() {
+        grid = new MovieGrid();
+        grid.setSizeFull();
+        grid.addSelectionListener(
+                event -> handleSelectionChange());
+        filterDataProvider = dataProvider.withConfigurableFilter();
+        grid.setDataProvider(filterDataProvider);
+    }
+
+    private void handleSelectionChange() {
+        Movie selectedMovie = grid.asSingleSelect().getValue();
+        if (selectedMovie != null)
+            viewLogic.rowSelected(selectedMovie);
     }
 
     private HorizontalLayout createTopBar() {
@@ -110,7 +116,7 @@ public class MovieView extends VerticalLayout implements View {
         topLayout.addComponents(startingLetterFilter, searchFilter, genreFilter, randomMovie, newMovie);
 
         newMovie.addClickListener(e -> viewLogic.newMovie());
-        randomMovie.addClickListener(e -> viewLogic.randomMovieProposal());
+        randomMovie.addClickListener(e -> viewLogic.randomMovieProposal(new Movie()));
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
         topLayout.setMargin(new MarginInfo(false, false, false, true));
         return topLayout;
@@ -125,22 +131,18 @@ public class MovieView extends VerticalLayout implements View {
     }
 
     public void clearSelection() {
-        grid.getSelectionModel().deselectAll();
+        grid.deselectAll();
     }
 
-    public void selectRow(Movie row) {
-        grid.getSelectionModel().select(row);
-    }
-
-    public Movie getSelectedRow() {
-        return grid.getSelectedRow();
+    public void selectMovie(Movie movie) {
+        grid.select(movie);
     }
 
     public void refreshGrid(Movie movie) {
         grid.refresh(movie);
     }
 
-    public void editMovie(Movie movie) {
+    public void showMovieDetailForm(Movie movie) {
         if (movie != null) {
             form.addStyleName("visible");
             form.setEnabled(true);
@@ -152,21 +154,14 @@ public class MovieView extends VerticalLayout implements View {
 
     public void updateMovie(Movie movie) {
         dataProvider.save(movie);
+        refreshGrid(movie);
     }
 
     public void removeMovie(Movie movie) {
         dataProvider.delete(movie);
     }
 
-    private void loadApplicationContext() {
-        this.dataProvider = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
-                .getBean(MovieDataProvider.class);
-        this.formFactory = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
-                .getBean(MovieDetailForm.MovieFormFactory.class);
 
-    }
 
     public void hideForm() {
         form.setVisible(false);

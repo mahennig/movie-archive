@@ -72,14 +72,14 @@ public class MovieDataProviderImpl extends AbstractBackEndDataProvider<Movie, Fi
         } else {
             if (filterText.getCapital() != null && !filterText.getCapital().isEmpty()) {
                 if (filterText.getCapital().equals("#")) {
-                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream().
+                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectorsContainingIgnoreCaseOrCastContainingIgnoreCase(filterText.getSearchText(), filterText.getSearchText(), filterText.getSearchText()).stream().
                             filter(m -> Character.isDigit(m.getTitle().charAt(0)));
                 } else {
-                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream().
+                    return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectorsContainingIgnoreCaseOrCastContainingIgnoreCase(filterText.getSearchText(), filterText.getSearchText(), filterText.getSearchText()).stream().
                             filter(m -> m.getTitle().toLowerCase().startsWith(filterText.getCapital().toLowerCase()));
                 }
             } else {
-                return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectors(filterText.getSearchText(), filterText.getSearchText()).stream();
+                return movieRepository.findDistinctByTitleContainingIgnoreCaseOrDirectorsContainingIgnoreCaseOrCastContainingIgnoreCase(filterText.getSearchText(), filterText.getSearchText(), filterText.getSearchText()).stream();
             }
 
         }

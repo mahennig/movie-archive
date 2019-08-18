@@ -24,10 +24,6 @@ public class MovieDetailFormDesign extends VerticalLayout {
 
     protected TextArea description = new TextArea("Handlung");
     protected TextField tags = new TextField("Schlagwörter");
-    protected Button trailer = new Button("Trailer", VaadinIcons.YOUTUBE);
-
-    protected Image image = new Image("Bild");
-    protected PopupView popup;
 
     protected Button saveButton = new Button("Speichern", VaadinIcons.SAFE);
     protected Button discardButton = new Button("Verwerfen", VaadinIcons.CROSS_CUTLERY);
@@ -78,14 +74,9 @@ public class MovieDetailFormDesign extends VerticalLayout {
         rightContainer.setSizeFull();
         description.setSizeFull();
         tags.setSizeFull();
-        trailer.setSizeFull();
-        rightContainer.addComponents(description, tags, trailer);
-        rightContainer.setComponentAlignment(trailer, Alignment.BOTTOM_CENTER);
+        rightContainer.addComponents(description, tags);
         inputBar.addComponents(rightContainer);
         inputBar.setComponentAlignment(rightContainer, Alignment.TOP_RIGHT);
-
-        // Image
-        initImage();
 
         // Buttons
         HorizontalLayout buttonBar = new HorizontalLayout();
@@ -93,14 +84,5 @@ public class MovieDetailFormDesign extends VerticalLayout {
         addComponents(inputBar, buttonBar);
     }
 
-    private void initImage() {
-        image.setSource(new ExternalResource("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWiZVjBlrvZ9h01TB6m-nrcbjOnMcsoqqT0qWxFcbWjThUsGFr"));
-        inputBar.addComponents(image);
-        inputBar.setComponentAlignment(image, Alignment.TOP_RIGHT);
 
-        VerticalLayout popupContent = new VerticalLayout();
-        popupContent.addComponent(new TextField("Textfield"));
-        popupContent.addComponent(new Button("Button"));
-
-    }
 }

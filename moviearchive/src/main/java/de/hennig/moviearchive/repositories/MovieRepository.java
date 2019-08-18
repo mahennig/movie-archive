@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MovieRepository extends CrudRepository<Movie, Long> {
 
-    List<Movie> findDistinctByTitleContainingIgnoreCaseOrDirectors(String title, String director);
+    List<Movie> findDistinctByTitleContainingIgnoreCaseOrDirectorsContainingIgnoreCaseOrCastContainingIgnoreCase(String title, String director, String actor);
 
     List<Movie> findDistinctByTitleContainingIgnoreCaseOrDirectorsOrTags(String title, String director, String tag);
 }

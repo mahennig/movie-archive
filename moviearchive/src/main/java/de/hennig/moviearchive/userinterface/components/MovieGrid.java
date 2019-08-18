@@ -10,11 +10,13 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.SingleSelect;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.ImageRenderer;
 import de.hennig.moviearchive.domain.Movie;
 
 import de.hennig.moviearchive.domain.core.CountryData;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +25,12 @@ import java.io.File;
 
 @SpringComponent
 @UIScope
+@Slf4j
 public class MovieGrid extends Grid<Movie> {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
     public MovieGrid() {
+        setSelectionMode(SelectionMode.SINGLE);
+
         Column<Movie, String> nameCol = addColumn(Movie::getTitle).setDescriptionGenerator(Movie::getTitle).setCaption("Titel");
         addColumn(Movie::getDirectors).setCaption("Regisseur").setWidth(200);
         addColumn(Movie::getYear).setCaption("Jahr").setWidth(100);
@@ -44,10 +47,7 @@ public class MovieGrid extends Grid<Movie> {
         getDataCommunicator().refresh(movie);
     }
 
-    public Movie getSelectedRow() {
-        Movie movie = asSingleSelect().getValue();
-        logger.info("Selected: {}", movie);
-        return movie;
-    }
+
+
 
 }

@@ -10,6 +10,7 @@ import com.vaadin.ui.*;
 import de.hennig.moviearchive.domain.Movie;
 import de.hennig.moviearchive.services.MovieCrudLogic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -19,11 +20,12 @@ import javax.annotation.PostConstruct;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Slf4j
 public class MovieDetailForm extends MovieDetailFormDesign {
 
-    MovieCrudLogic viewLogic;
+    private MovieCrudLogic viewLogic;
     private Binder<Movie> binder = new Binder<>(Movie.class);
-    Movie currentMovie;
+    private Movie currentMovie;
 
     @SpringComponent
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -47,10 +49,47 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         this.setVisible(false);
     }
 
+    @PostConstruct
+    private void init() {
+        binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
+        binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
+        binder.forField(year)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getYear, Movie::setYear);
+        binder.forField(runtime)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getRunningTime, Movie::setRunningTime);
+        binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
+        binder.forField(directors).bind(Movie::getDirectors, Movie::setDirectors);
+        binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
+        binder.forField(folder)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getFolder, Movie::setFolder);
+        binder.forField(page)
+                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
+                .withNullRepresentation(0)
+                .bind(Movie::getPage, Movie::setPage);
+        binder.forField(actors).bind(Movie::getCast, Movie::setCast);
+        binder.forField(tags).bind(Movie::getTags, Movie::setTags);
+
+        saveButton.addClickListener(event -> onSave());
+        cancelButton.addClickListener(event -> viewLogic.cancelMovie());
+        deleteButton.addClickListener(event -> onDelete());
+        discardButton.addClickListener(event -> setUpData());
+
+        binder.addStatusChangeListener(this::updateButtons);
+    }
+
     private void onSave() {
+        log.info("About to persist the movie: {}", currentMovie);
         if (binder.writeBeanIfValid(currentMovie)) {
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
+        } else {
+            Notification.show("Speichern Fehlgeschlagen. Bitte überprüfen Sie die Eingaben.");
         }
     }
 
@@ -95,48 +134,5 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         discardButton.setEnabled(changes);
     }
 
-    /*
-        Binding all fields with current Movie Bean
-     */
-    @PostConstruct
-    private void init() {
-        binder.forField(title).bind(Movie::getTitle, Movie::setTitle);
-        binder.forField(description).bind(Movie::getDescription, Movie::setDescription);
-        binder.forField(year)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getYear, Movie::setYear);
-        binder.forField(runtime)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getRunningTime, Movie::setRunningTime);
-        binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
-        binder.forField(directors).bind(Movie::getDirectors, Movie::setDirectors);
-        binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
-        binder.forField(folder)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getFolder, Movie::setFolder);
-        binder.forField(page)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getPage, Movie::setPage);
-        binder.forField(actors).bind(Movie::getCast, Movie::setCast);
-        binder.forField(tags).bind(Movie::getTags, Movie::setTags);
-
-        saveButton.addClickListener(event -> onSave());
-        cancelButton.addClickListener(event -> viewLogic.cancelMovie());
-        deleteButton.addClickListener(event -> onDelete());
-        discardButton.addClickListener(event -> setUpData());
-        initTrailerButton();
-        binder.addStatusChangeListener(this::updateButtons);
-    }
-
-    private void initTrailerButton() {
-        trailer.addClickListener(e -> {
-            if (currentMovie.getTitle() != null && !currentMovie.getTitle().isEmpty())
-                getUI().getPage().open("https://www.youtube.com/results?search_query=" + currentMovie.getTitle(), "_blank");
-        });
-    }
 
 }

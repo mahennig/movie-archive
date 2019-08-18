@@ -1,20 +1,15 @@
 package de.hennig.moviearchive.services;
 
 
-import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Notification;
 import de.hennig.moviearchive.domain.Movie;
-import de.hennig.moviearchive.userinterface.MovieArchiveUI;
 import de.hennig.moviearchive.userinterface.views.MovieView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
-import java.awt.*;
 import java.io.Serializable;
-import java.util.Optional;
 
 @SpringComponent
 public class MovieCrudLogic implements Serializable {
@@ -50,88 +45,44 @@ public class MovieCrudLogic implements Serializable {
     }
 
     public void cancelMovie() {
-        setFragmentParameter("");
         view.clearSelection();
-        view.editMovie(null);
+        view.showMovieDetailForm(null);
         view.hideForm();
     }
 
-    private void setFragmentParameter(String movieId) {
-        String fragmentParameter;
-        if (movieId == null || movieId.isEmpty()) {
-            fragmentParameter = "";
-        } else {
-            fragmentParameter = movieId;
-        }
-
-        Page page = MovieArchiveUI.get().getPage();
-        page.setUriFragment(
-                "!" + MovieView.ROUTE + "/" + fragmentParameter,
-                false);
-
-    }
-
-    public void enter(String movieId) {
-        if (movieId != null && !movieId.isEmpty()) {
-            if (movieId.equals("new")) {
-                newMovie();
-            } else {
-                try {
-                    long mid = Integer.parseInt(movieId);
-                    Movie movie = findMovie(mid);
-                    view.selectRow(movie);
-                } catch (NumberFormatException e) {
-                }
-            }
-        }
-    }
-
-    private Movie findMovie(long movieId) {
-        Optional<Movie> movie = movieService.getMovie(movieId);
-        return movie.orElse(null);
-    }
-
     public void saveMovie(Movie movie) {
-        view.clearSelection();
-        view.editMovie(null);
         view.updateMovie(movie);
-        setFragmentParameter("");
+        view.clearSelection();
+        view.refreshGrid(movie);
+        //view.editMovie(null);
     }
 
     public void deleteMovie(Movie movie) {
         movieService.deleteMovie(movie);
         view.clearSelection();
-        view.editMovie(null);
+        view.showMovieDetailForm(null);
         view.removeMovie(movie);
-        setFragmentParameter("");
     }
 
     public void editMovie(Movie movie) {
-        if (movie == null) {
-            setFragmentParameter("");
-        } else {
-            setFragmentParameter(movie.getId() + "");
-        }
-        view.editMovie(movie);
+        view.showMovieDetailForm(movie);
     }
 
 
     public void newMovie() {
         view.clearSelection();
-        setFragmentParameter("new");
-        view.editMovie(new Movie());
+        view.showMovieDetailForm(new Movie());
         view.showForm();
     }
 
 
-    public void randomMovieProposal() {
-        Movie randomMovie = movieService.getRandomMovie();
-        Notification.show(randomMovie.getTitle() + " mit " + randomMovie.getCast());
+    public void randomMovieProposal(Movie movie) {
+        view.selectMovie(movie);
     }
 
 
     public void rowSelected(Movie movie) {
-        view.editMovie(movie);
+        view.showMovieDetailForm(movie);
         view.showForm();
     }
 

@@ -70,7 +70,7 @@ public class MovieArchiveUI extends UI {
         navigator.addView(MovieView.ROUTE, MovieView.class);
         navigator.addView(LoginView.ROUTE, LoginView.class);
 
-        navigator.navigateTo(LoginView.ROUTE);
+        navigator.navigateTo(MovieView.ROUTE);
     }
 
     private void buildViewContainer() {
