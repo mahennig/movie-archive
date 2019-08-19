@@ -37,9 +37,6 @@ public class MovieCrudLogic implements Serializable {
     private MovieCrudLogic() {
     }
 
-    public void init() {
-    }
-
     private void init(MovieView view) {
         this.view = view;
     }
@@ -54,11 +51,9 @@ public class MovieCrudLogic implements Serializable {
         view.updateMovie(movie);
         view.clearSelection();
         view.refreshGrid(movie);
-        //view.editMovie(null);
     }
 
     public void deleteMovie(Movie movie) {
-        movieService.deleteMovie(movie);
         view.clearSelection();
         view.showMovieDetailForm(null);
         view.removeMovie(movie);
@@ -72,7 +67,6 @@ public class MovieCrudLogic implements Serializable {
     public void newMovie() {
         view.clearSelection();
         view.showMovieDetailForm(new Movie());
-        view.showForm();
     }
 
 
@@ -82,8 +76,7 @@ public class MovieCrudLogic implements Serializable {
 
 
     public void rowSelected(Movie movie) {
-        view.showMovieDetailForm(movie);
-        view.showForm();
+        editMovie(movie);
     }
 
     public void hideSelectView() {

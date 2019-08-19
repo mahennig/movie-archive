@@ -18,6 +18,10 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * This class links UI component to CRUD operations and bind's field to the Bean.
+ */
+
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Slf4j
@@ -78,14 +82,14 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         saveButton.addClickListener(event -> onSave());
         cancelButton.addClickListener(event -> viewLogic.cancelMovie());
         deleteButton.addClickListener(event -> onDelete());
-        discardButton.addClickListener(event -> setUpData());
+        discardButton.addClickListener(event -> bindCurrentMovie());
 
         binder.addStatusChangeListener(this::updateButtons);
     }
 
     private void onSave() {
-        log.info("About to persist the movie: {}", currentMovie);
         if (binder.writeBeanIfValid(currentMovie)) {
+            log.info("About to persist the movie: {}", currentMovie);
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
         } else {
@@ -95,7 +99,8 @@ public class MovieDetailForm extends MovieDetailFormDesign {
 
     public void editMovie(Movie movie) {
         currentMovie = movie;
-        setUpData();
+        log.info("About to edit the movie: {}", currentMovie);
+        bindCurrentMovie();
         deleteButton.setEnabled(movie != null && movie.getId() != -1);
         String scrollScript = "window.document.getElementById('" + getId()
                 + "').scrollTop = 0;";
@@ -103,6 +108,7 @@ public class MovieDetailForm extends MovieDetailFormDesign {
     }
 
     private void onDelete() {
+        log.info("About to delete the movie: {}", currentMovie);
         if (currentMovie != null) {
             viewLogic.deleteMovie(currentMovie);
             viewLogic.hideSelectView();
@@ -118,10 +124,11 @@ public class MovieDetailForm extends MovieDetailFormDesign {
                 .show(Page.getCurrent());
     }
 
-    private void setUpData() {
+    private void bindCurrentMovie() {
         if (currentMovie != null) {
             binder.readBean(currentMovie);
         } else {
+            log.warn("Unable to bind null.");
             binder.removeBean();
         }
     }

@@ -13,13 +13,13 @@ public interface MovieDataProvider extends DataProvider<Movie, FilterAttributes>
      *
      * @param movie the updated or new movie
      */
-    public void save(Movie movie);
+    void save(Movie movie);
 
     /**
      * Delete given movie from the repository.
      *
      * @param movie the movie to be deleted
      */
-    public void delete(Movie movie);
+    void delete(Movie movie);
 
 }

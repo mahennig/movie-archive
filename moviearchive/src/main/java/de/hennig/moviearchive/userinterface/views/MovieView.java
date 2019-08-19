@@ -37,16 +37,9 @@ public class MovieView extends VerticalLayout implements View {
 
     private ConfigurableFilterDataProvider<Movie, Void, FilterAttributes> filterDataProvider;
 
-    FilterAttributes filter = new FilterAttributes();
-    private TextField searchFilter;
-    private ComboBox<String> startingLetterFilter;
-    private TextField genreFilter;
-    private Button newMovie;
-    private Button randomMovie;
-
     private MovieGrid grid;
 
-    private Panel detailPanel;
+
     private MovieDetailForm form;
 
     private MovieCrudLogic viewLogic;
@@ -69,7 +62,7 @@ public class MovieView extends VerticalLayout implements View {
 
         addComponentsAndExpand(barAndGridLayout);
 
-        detailPanel = createMovieDetailForm();
+        Panel detailPanel = createMovieDetailForm();
         addComponent(detailPanel);
         setComponentAlignment(detailPanel, Alignment.BOTTOM_CENTER);
 
@@ -83,6 +76,7 @@ public class MovieView extends VerticalLayout implements View {
                 event -> handleSelectionChange());
         filterDataProvider = dataProvider.withConfigurableFilter();
         grid.setDataProvider(filterDataProvider);
+
     }
 
     private void handleSelectionChange() {
@@ -93,24 +87,25 @@ public class MovieView extends VerticalLayout implements View {
 
     private HorizontalLayout createTopBar() {
         HorizontalLayout topLayout = new HorizontalLayout();
+        FilterAttributes filter = new FilterAttributes();
 
-        newMovie = new Button("Neuen Film hinzufügen");
+        Button newMovie = new Button("Neuen Film hinzufügen");
         newMovie.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        randomMovie = new Button(VaadinIcons.LIGHTBULB);
+        Button randomMovie = new Button(VaadinIcons.LIGHTBULB);
 
-        searchFilter = new TextField();
+        TextField searchFilter = new TextField();
         searchFilter.setWidth("250px");
         searchFilter.setPlaceholder("Titel & Personen");
         searchFilter.addValueChangeListener(event -> filterDataProvider.setFilter(filter.setSearchText(event.getValue())));
 
-        startingLetterFilter = new ComboBox<>();
+        ComboBox<String> startingLetterFilter = new ComboBox<>();
         startingLetterFilter.setPlaceholder("Initiale");
         startingLetterFilter.setItems("#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
                 "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
         startingLetterFilter.addValueChangeListener(valueChangeEvent ->
                 filterDataProvider.setFilter(filter.setCapital(valueChangeEvent.getValue())));
 
-        genreFilter = new TextField();
+        TextField genreFilter = new TextField();
         genreFilter.setPlaceholder("Genre");
 
         topLayout.addComponents(startingLetterFilter, searchFilter, genreFilter, randomMovie, newMovie);
@@ -143,13 +138,8 @@ public class MovieView extends VerticalLayout implements View {
     }
 
     public void showMovieDetailForm(Movie movie) {
-        if (movie != null) {
-            form.addStyleName("visible");
-            form.setEnabled(true);
-        } else {
-            form.removeStyleName("visible");
-        }
         form.editMovie(movie);
+        form.setVisible(true);
     }
 
     public void updateMovie(Movie movie) {
@@ -162,13 +152,8 @@ public class MovieView extends VerticalLayout implements View {
     }
 
 
-
     public void hideForm() {
         form.setVisible(false);
-    }
-
-    public void showForm() {
-        form.setVisible(true);
     }
 
 }
