@@ -7,7 +7,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -17,10 +16,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.ui.themes.BaseTheme;
 import de.hennig.moviearchive.userinterface.views.ErrorView;
 import de.hennig.moviearchive.userinterface.views.LoginView;
-import de.hennig.moviearchive.userinterface.views.MovieView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -67,10 +64,10 @@ public class MovieArchiveUI extends UI {
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addProvider(provider);
         navigator.setErrorView(ErrorView.class);
-        navigator.addView(MovieView.ROUTE, MovieView.class);
-        navigator.addView(LoginView.ROUTE, LoginView.class);
+        //navigator.addView(MovieView.ROUTE, MovieView.class);
+        //navigator.addView(LoginView.ROUTE, LoginView.class);
 
-        navigator.navigateTo(MovieView.ROUTE);
+        navigator.navigateTo(LoginView.ROUTE);
     }
 
     private void buildViewContainer() {

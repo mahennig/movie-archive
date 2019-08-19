@@ -1,10 +1,14 @@
 package de.hennig.moviearchive.userinterface.views;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
@@ -15,22 +19,32 @@ public class LoginView extends VerticalLayout implements View {
 
     public static final String ROUTE = "login";
 
-    TextField username = new TextField("Nutzername");
     TextField password = new TextField("Passwort");
-    Button loginButton = new Button("Press me!");
+    Button loginButton = new Button("Einloggen");
 
     @PostConstruct
     private void init() {
-        this.addComponents(username, password, loginButton);
+        this.addComponents(password, loginButton);
+        password.setStyleName(ValoTheme.TEXTFIELD_LARGE);
+        loginButton.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
+        loginButton.setStyleName(ValoTheme.BUTTON_LARGE);
+        loginButton.setIcon(VaadinIcons.KEY);
+        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         loginButton.addClickListener(e -> process());
     }
 
     private void process() {
-        this.getUI().getNavigator().navigateTo(MovieView.ROUTE);
+        if (authenticate(password.getValue())) {
+            log.info("Authentication successful.");
+            this.getUI().getNavigator().navigateTo(MovieView.ROUTE);
+        } else {
+            log.warn("Authentication failed.");
+            Notification.show("Login fehlgeschlagen.", Notification.Type.WARNING_MESSAGE);
+        }
     }
 
-    private boolean authenticate(String user, String pw) {
-        if (user != null && pw != null) return true;
+    private boolean authenticate(String pw) {
+        if ("markus".equals(pw)) return true;
         return false;
     }
 

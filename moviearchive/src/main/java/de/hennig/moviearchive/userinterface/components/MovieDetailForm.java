@@ -88,23 +88,14 @@ public class MovieDetailForm extends MovieDetailFormDesign {
     }
 
     private void onSave() {
+        log.info("About to persist the movie: {}", currentMovie);
         if (binder.writeBeanIfValid(currentMovie)) {
-            log.info("About to persist the movie: {}", currentMovie);
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
+            binder.removeBean();
         } else {
             Notification.show("Speichern nicht möglich.");
         }
-    }
-
-    public void editMovie(Movie movie) {
-        currentMovie = movie;
-        log.info("About to edit the movie: {}", currentMovie);
-        bindCurrentMovie();
-        deleteButton.setEnabled(movie != null && movie.getId() != -1);
-        String scrollScript = "window.document.getElementById('" + getId()
-                + "').scrollTop = 0;";
-        Page.getCurrent().getJavaScript().execute(scrollScript);
     }
 
     private void onDelete() {
@@ -112,24 +103,26 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         if (currentMovie != null) {
             viewLogic.deleteMovie(currentMovie);
             viewLogic.hideSelectView();
-        } else {
-            if (currentMovie == null) {
-                sendNoMovieSelectedNotication();
-            }
+            binder.removeBean();
         }
     }
 
-    private void sendNoMovieSelectedNotication() {
-        new Notification("Warnung", "Es wurde kein Film ausgewählt!", Notification.Type.WARNING_MESSAGE, true)
-                .show(Page.getCurrent());
+    public void loadMovieData(Movie movie) {
+        currentMovie = movie;
+        log.info("About to edit the movie: {}", movie);
+        bindCurrentMovie();
+        deleteButton.setEnabled(movie != null && movie.getId() != -1);
+        String scrollScript = "window.document.getElementById('" + getId()
+                + "').scrollTop = 0;";
+        Page.getCurrent().getJavaScript().execute(scrollScript);
     }
+
 
     private void bindCurrentMovie() {
         if (currentMovie != null) {
             binder.readBean(currentMovie);
         } else {
             log.warn("Unable to bind null.");
-            binder.removeBean();
         }
     }
 
@@ -139,6 +132,7 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         boolean movieNotNull = currentMovie != null;
         saveButton.setEnabled(!validationErrors && changes && movieNotNull);
         discardButton.setEnabled(changes);
+        deleteButton.setEnabled(movieNotNull);
     }
 
 

@@ -4,7 +4,6 @@ import com.vaadin.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.data.provider.Query;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -20,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringView(name = MovieView.ROUTE)
 @Slf4j
@@ -132,19 +129,14 @@ public class MovieView extends VerticalLayout implements View {
         grid.select(movie);
     }
 
-    public void refreshGrid(Movie movie) {
-        grid.refresh(movie);
-    }
-
     public void showMovieDetailForm(Movie movie) {
-        form.editMovie(movie);
+        form.loadMovieData(movie);
         form.setVisible(true);
     }
 
     public void updateMovie(Movie movie) {
         try {
             dataProvider.save(movie);
-            refreshGrid(movie);
         } catch (Exception e) {
             Notification.show("Speichern nicht möglich.");
         }
