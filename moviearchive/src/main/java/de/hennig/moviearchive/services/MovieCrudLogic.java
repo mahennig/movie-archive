@@ -30,10 +30,6 @@ public class MovieCrudLogic implements Serializable {
         }
     }
 
-    @Autowired
-    private MovieService movieService;
-
-
     private MovieCrudLogic() {
     }
 

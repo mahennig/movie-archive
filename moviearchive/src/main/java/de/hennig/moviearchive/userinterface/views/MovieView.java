@@ -1,6 +1,7 @@
 package de.hennig.moviearchive.userinterface.views;
 
 import com.vaadin.data.provider.ConfigurableFilterDataProvider;
+import com.vaadin.data.provider.Query;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServlet;
@@ -14,35 +15,34 @@ import de.hennig.moviearchive.services.MovieCrudLogic;
 import de.hennig.moviearchive.services.dataprovider.MovieDataProvider;
 import de.hennig.moviearchive.userinterface.components.MovieDetailForm;
 import de.hennig.moviearchive.userinterface.components.MovieGrid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SpringView(name = MovieView.ROUTE)
+@Slf4j
 public class MovieView extends VerticalLayout implements View {
 
     public static final String ROUTE = "movie";
 
     @Autowired
     private MovieDetailForm.MovieFormFactory formFactory;
+    private MovieGrid grid;
+    private MovieDetailForm form;
+
+    @Autowired
+    private MovieCrudLogic.MovieCrudLogicFactory logicFactory;
+    private MovieCrudLogic viewLogic;
 
     @Autowired
     private MovieDataProvider dataProvider;
-
-    @Autowired
-    private MovieCrudLogic.MovieCrudLogicFactory logicFactory = WebApplicationContextUtils
-            .getRequiredWebApplicationContext(VaadinServlet.getCurrent().getServletContext())
-            .getBean(MovieCrudLogic.MovieCrudLogicFactory.class);
-
     private ConfigurableFilterDataProvider<Movie, Void, FilterAttributes> filterDataProvider;
-
-    private MovieGrid grid;
-
-
-    private MovieDetailForm form;
-
-    private MovieCrudLogic viewLogic;
 
     @PostConstruct
     private void init() {
@@ -65,8 +65,6 @@ public class MovieView extends VerticalLayout implements View {
         Panel detailPanel = createMovieDetailForm();
         addComponent(detailPanel);
         setComponentAlignment(detailPanel, Alignment.BOTTOM_CENTER);
-
-        viewLogic.init();
     }
 
     private void createMovieGrid() {
@@ -75,6 +73,7 @@ public class MovieView extends VerticalLayout implements View {
         grid.addSelectionListener(
                 event -> handleSelectionChange());
         filterDataProvider = dataProvider.withConfigurableFilter();
+
         grid.setDataProvider(filterDataProvider);
 
     }
@@ -111,7 +110,7 @@ public class MovieView extends VerticalLayout implements View {
         topLayout.addComponents(startingLetterFilter, searchFilter, genreFilter, randomMovie, newMovie);
 
         newMovie.addClickListener(e -> viewLogic.newMovie());
-        randomMovie.addClickListener(e -> viewLogic.randomMovieProposal(new Movie()));
+        randomMovie.addClickListener(e -> viewLogic.randomMovieProposal(getRandomMovie()));
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
         topLayout.setMargin(new MarginInfo(false, false, false, true));
         return topLayout;
@@ -143,12 +142,24 @@ public class MovieView extends VerticalLayout implements View {
     }
 
     public void updateMovie(Movie movie) {
-        dataProvider.save(movie);
-        refreshGrid(movie);
+        try {
+            dataProvider.save(movie);
+            refreshGrid(movie);
+        } catch (Exception e) {
+            Notification.show("Speichern nicht möglich.");
+        }
     }
 
     public void removeMovie(Movie movie) {
         dataProvider.delete(movie);
+    }
+
+    private Movie getRandomMovie() {
+        Random r = new Random();
+        List<Movie> movies = filterDataProvider.fetch(new Query<Movie, Void>()).collect(Collectors.toList());
+        Movie movie = movies.get(r.nextInt(movies.size()));
+        log.info("Fetched random Movie: {}", movie.toString());
+        return movie;
     }
 
 

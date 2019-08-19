@@ -93,7 +93,7 @@ public class MovieDetailForm extends MovieDetailFormDesign {
             viewLogic.saveMovie(currentMovie);
             viewLogic.hideSelectView();
         } else {
-            Notification.show("Speichern Fehlgeschlagen. Bitte überprüfen Sie die Eingaben.");
+            Notification.show("Speichern nicht möglich.");
         }
     }
 

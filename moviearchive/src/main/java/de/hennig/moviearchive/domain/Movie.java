@@ -4,6 +4,7 @@ package de.hennig.moviearchive.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,9 +30,8 @@ public class Movie implements Serializable {
     @Column(name = "MOVIE_ID")
     private Long id = -1L;
 
-    @NotNull
-    @Size(min = 2, message = "Movie title name must have at least two characters")
-    @Column(name = "TITLE", unique = true)
+    @NotNull(message = "Bitte geben Sie einen Titel ein.")
+    @Column(name = "TITLE")
     private String title;
 
     @Column(name = "DIRECTORS")
