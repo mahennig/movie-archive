@@ -110,7 +110,7 @@ public class MovieView extends VerticalLayout implements View {
         topLayout.addComponents(startingLetterFilter, searchFilter, genreFilter, randomMovie, newMovie);
 
         newMovie.addClickListener(e -> viewLogic.newMovie());
-        randomMovie.addClickListener(e -> viewLogic.randomMovieProposal(getRandomMovie()));
+        randomMovie.addClickListener(e -> selectRandomMovie());
         topLayout.setComponentAlignment(newMovie, Alignment.TOP_RIGHT);
         topLayout.setMargin(new MarginInfo(false, false, false, true));
         return topLayout;
@@ -154,12 +154,19 @@ public class MovieView extends VerticalLayout implements View {
         dataProvider.delete(movie);
     }
 
-    private Movie getRandomMovie() {
+    private void selectRandomMovie() {
         Random r = new Random();
         List<Movie> movies = filterDataProvider.fetch(new Query<Movie, Void>()).collect(Collectors.toList());
-        Movie movie = movies.get(r.nextInt(movies.size()));
-        log.info("Fetched random Movie: {}", movie.toString());
-        return movie;
+
+        if (movies.isEmpty()) {
+            Notification.show("Es wurde kein Film gefunden. Bitte entfernen Sie gegegenfalls Filter.");
+            hideForm();
+            log.warn("Cannot select random movie. Movie list is empty.");
+        } else {
+            Movie movie = movies.get(r.nextInt(movies.size()));
+            viewLogic.randomMovieProposal(movie);
+            log.info("Fetched random Movie: {}", movie.toString());
+        }
     }
 
 
