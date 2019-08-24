@@ -68,14 +68,8 @@ public class MovieDetailForm extends MovieDetailFormDesign {
         binder.forField(genre).bind(Movie::getGenres, Movie::setGenres);
         binder.forField(directors).bind(Movie::getDirectors, Movie::setDirectors);
         binder.forField(country).bind(Movie::getCountry, Movie::setCountry);
-        binder.forField(folder)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getFolder, Movie::setFolder);
-        binder.forField(page)
-                .withConverter(new StringToIntegerConverter("Bitte eine Zahl eingeben."))
-                .withNullRepresentation(0)
-                .bind(Movie::getPage, Movie::setPage);
+        binder.forField(folder).bind(Movie::getFolder, Movie::setFolder);
+        binder.forField(page).bind(Movie::getPage, Movie::setPage);
         binder.forField(actors).bind(Movie::getCast, Movie::setCast);
         binder.forField(tags).bind(Movie::getTags, Movie::setTags);
 

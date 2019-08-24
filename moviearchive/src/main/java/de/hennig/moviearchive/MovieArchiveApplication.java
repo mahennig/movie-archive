@@ -25,7 +25,7 @@ public class MovieArchiveApplication extends SpringBootServletInitializer {
         SpringApplication.run(MovieArchiveApplication.class, args);
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void initTestData() {
         service.saveMovie(generateMovie("Harry Potter", "Tom Bla", "Richard, Emma", "Fantasy"));
         service.saveMovie(generateMovie("The Boys", "Amazon", "Jerry, Emma", "Fantasy, Komödie"));

@@ -4,10 +4,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +16,7 @@ public class LoginView extends VerticalLayout implements View {
 
     public static final String ROUTE = "login";
 
-    TextField password = new TextField("Passwort");
+    PasswordField password = new PasswordField("Passwort");
     Button loginButton = new Button("Einloggen");
 
     @PostConstruct
@@ -44,7 +41,7 @@ public class LoginView extends VerticalLayout implements View {
     }
 
     private boolean authenticate(String pw) {
-        if ("markus".equals(pw)) return true;
+        if ("".equals(pw)) return true;
         return false;
     }
 

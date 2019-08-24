@@ -49,17 +49,17 @@ public class Movie implements Serializable {
     @Column(name = "GENRE")
     private String genres;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", length = 1024)
     private String description;
 
     @Column(name = "RUNNING_TIME")
     private Integer runningTime;
 
-    @Column(name = "FOLDER")
-    private Integer folder;
+    @Column(name = "FOLDER", length = 50)
+    private String folder;
 
-    @Column(name = "PAGE")
-    private Integer page;
+    @Column(name = "PAGE", length = 50)
+    private String page;
 
     @Column(name = "TAG")
     private String tags;
