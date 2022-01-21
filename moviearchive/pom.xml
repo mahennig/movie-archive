@@ -19,7 +19,7 @@
         <vaadin.version>8.7.2</vaadin.version>
         <vaadin.widgetset.mode>cdn</vaadin.widgetset.mode>
         <!-- fetch, cdn, local -->
-        <h2.version>1.4.197</h2.version>
+        <h2.version>2.1.210</h2.version>
 
         <main.class>de.hennig.moviearchive.MovieArchiveApplication</main.class>
     </properties>
